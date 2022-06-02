@@ -14,5 +14,6 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void signUp(View view) {
+
     }
 }
