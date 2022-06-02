@@ -2,6 +2,7 @@ package com.example.newicqandroid;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -19,10 +20,16 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void setListeners(){
+
         binding.btnRegister.setOnClickListener(this::signUp);
+        binding.imageButton.setOnClickListener(this::uploadImg);
     }
 
     public void signUp(View view) {
+
+    }
+
+    public void uploadImg(View view){
 
     }
 }
