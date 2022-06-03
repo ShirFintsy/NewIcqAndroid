@@ -3,7 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/shirf/AndroidStudioProjects/NewIcqAndroid/app/src/main/res/layout/activity_main.xml" value="0.14130434782608695" />
+        <entry key="app/src/main/res/drawable/gradient_background.xml" value="0.141" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.19908814589665655" />
+        <entry key="app/src/main/res/layout/activity_register.xml" value="0.381294964028777" />
       </map>
     </option>
   </component>
