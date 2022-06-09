@@ -19,7 +19,7 @@ public class LogInActivity extends AppCompatActivity {
     }
 
     private void setListeners(){
-        binding.button.setOnClickListener(v->
+        binding.btnLogin.setOnClickListener(v->
                 startActivity(new Intent(getApplicationContext(), RegisterActivity.class)));
     }
 }

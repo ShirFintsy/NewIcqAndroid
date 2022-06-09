@@ -14,20 +14,57 @@
         android:orientation="vertical"
         android:layout_marginTop="100dp">
         <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="LogIn Page"
-            android:gravity="center"
-            android:textColor="@color/black"
-            android:textSize="50sp"
-            android:textStyle="bold"/>
-        <Button
-            android:id="@+id/button"
+            android:id="@+id/registerScreen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="to Register"
-            android:layout_gravity="center"/>
+            android:layout_marginStart="35dp"
+            android:layout_marginTop="15dp"
+            android:text="@string/Login"
+            android:textColor="@color/black"
+            android:textSize="50sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/userNameTxt"
+            android:layout_width="409dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/user_name"
+            android:textAlignment="center"
+            android:textSize="17sp" />
+
+        <EditText
+            android:id="@+id/userNameInput"
+            android:layout_width="370dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:ems="10"
+            android:textAlignment="textStart"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/passwordTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/password"
+            android:textAlignment="center"
+            android:textSize="17sp" />
+
+        <EditText
+            android:id="@+id/passwordInput"
+            android:layout_width="369dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:ems="10"
+            android:inputType="textPassword" />
+
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="210dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="100dp"
+            android:text="@string/Login" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
