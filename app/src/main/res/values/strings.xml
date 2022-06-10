@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">NewIcq</string>
     <string name="Login">Login</string>
+    <string name="notRegister">Not register? Click here to register</string>
 </resources>

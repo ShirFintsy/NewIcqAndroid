@@ -58,6 +58,13 @@
             android:ems="10"
             android:inputType="textPassword" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/registerLink"
+            android:text="@string/notRegister"/>
+
+
         <Button
             android:id="@+id/btnLogin"
             android:layout_width="210dp"
