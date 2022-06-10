@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">NewIcqAndroid</string>
-    <string name="username" >UserName</string>
-    <string name="password">Password</string>
+    <string name="app_name">NewIcq</string>
+    <string name="Login">Login</string>
 </resources>
