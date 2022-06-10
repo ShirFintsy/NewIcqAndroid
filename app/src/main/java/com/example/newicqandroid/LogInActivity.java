@@ -20,9 +20,51 @@ public class LogInActivity extends AppCompatActivity {
         setListeners();
     }
     private void setListeners(){
-        binding.btnLogin.setOnClickListener(v->
+        binding.btnLogin.setOnClickListener(view ->{
+            login();
+
+            //startActivity(new Intent(getApplicationContext(), ChatsActivity.class));
+        });
+        binding.registerLink.setOnClickListener(view ->
                 startActivity(new Intent(getApplicationContext(), RegisterActivity.class)));
     }
+
+    private void login() {
+        String username = binding.userNameInput.getText().toString();
+        String password = binding.passwordInput.getText().toString();
+
+        //validation:
+        if(username.isEmpty()) {
+            binding.userNameInput.setError("Please fill out this field");
+            binding.userNameInput.requestFocus();
+        } else if(!checkIfUserExists(username)){
+            binding.userNameInput.setError("User does not exists");
+            binding.userNameInput.requestFocus();
+        } if (password.isEmpty()) {
+            binding.passwordInput.setError("Please fill out this field");
+            binding.passwordInput.requestFocus();
+        } else if(!validPassword(username, password)) {
+            binding.passwordInput.setError("Wrong password");
+            binding.passwordInput.requestFocus();
+        }
+
+        // enter chats activity:
+        Intent intent = new Intent(this, ChatsActivity.class);
+        intent.putExtra("username", username);
+        startActivity(intent);
+    }
+
+    private boolean checkIfUserExists(String username) {
+        return false; // until connection to API
+    }
+
+    private boolean validPassword(String username, String password) {
+        return false; // until connection to API
+    }
+
+
+
+
 //    private void setListeners(){
 //        binding.btnLogin.setOnClickListener(v-> {
 //            EditText username = findViewById(R.id.userNameInput);

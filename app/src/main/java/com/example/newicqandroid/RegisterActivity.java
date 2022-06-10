@@ -66,7 +66,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
-    public void uploadImg(View view){
+    public void uploadImg(View view) {
         Intent i = new Intent();
         i.setType("image/*");
         i.setAction(Intent.ACTION_GET_CONTENT);
