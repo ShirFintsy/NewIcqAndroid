@@ -17,9 +17,9 @@ import com.example.newicqandroid.databinding.ActivityRegisterBinding;
 import java.io.IOException;
 
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity implements IOnResponse {
 
-    private ActivityRegisterBinding binding;
+    public ActivityRegisterBinding binding;
     private RegisterValidations validator;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +37,11 @@ public class RegisterActivity extends AppCompatActivity {
         binding.imageButton.setOnClickListener(this::uploadImg);
     }
 
+    private void updateUserError(){
+        binding.userNameInput.setError("Username already exists");
+        binding.userNameInput.requestFocus();
+    }
+
     public void signUp(View view) {
         String passPattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$";
         String username = binding.userNameInput.getText().toString().trim();
@@ -44,16 +49,20 @@ public class RegisterActivity extends AppCompatActivity {
         String pass = binding.passwordInput.getText().toString().trim();
         String confirmPass = binding.confirmPasswordInput.getText().toString().trim();
 
-        if(username.isEmpty()){
+
+
+        if(username.isEmpty()) {
             binding.userNameInput.setError("Please fill out this field");
             binding.userNameInput.requestFocus();
-        }else if(validator.checkIsExists(username)){
-            binding.userNameInput.setError("Username already exists");
-            binding.userNameInput.requestFocus();
-        }else if(displayName.isEmpty()){
+        }else{
+            validator.checkIsExists(username, this);
+        //}else if(validator.checkIsExists(username, this)){
+            //binding.userNameInput.setError("Username already exists");
+            //binding.userNameInput.requestFocus();
+        } if(displayName.isEmpty()){
             binding.displayNameInput.setError("Please fill out this field");
             binding.displayNameInput.requestFocus();
-        }else if(pass.isEmpty()){
+        } if(pass.isEmpty()){
             binding.passwordInput.setError("Please fill out this field");
             binding.passwordInput.requestFocus();
         }else if(!pass.matches(passPattern)){
@@ -95,4 +104,11 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
         });
+
+
+    @Override
+    public void onResponseIsUserExists() {
+        binding.userNameInput.setError("Username already exists");
+        binding.userNameInput.requestFocus();
+    }
 }
