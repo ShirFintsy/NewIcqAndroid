@@ -49,7 +49,7 @@ public class LogInActivity extends AppCompatActivity {
         }
 
         // enter chats activity:
-        Intent intent = new Intent(this, ChatsActivity.class);
+        Intent intent = new Intent(getApplicationContext(), ChatsActivity.class);
         intent.putExtra("username", username);
         startActivity(intent);
     }
