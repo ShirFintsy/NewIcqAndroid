@@ -24,9 +24,37 @@ public class User {
         lastdate = null;
     }
 
+    //todo: maybe will be deleted- just for now
+    public User(String name){
+        Name = name;
+    }
+
     public String getPassword() {
         return Password;
     }
 
+    public String getId() {
+        return Id;
+    }
+
+    public String getName() {
+        return Name;
+    }
+
+    public String getImage() {
+        return Image;
+    }
+
+    public String getServer() {
+        return Server;
+    }
+
+    public String getLast() {
+        return last;
+    }
+
+    public String getLastdate() {
+        return lastdate;
+    }
 
 }

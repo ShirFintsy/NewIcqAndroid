@@ -25,8 +25,12 @@ public class LogInActivity extends AppCompatActivity implements IOnResponse {
         binding.btnLogin.setOnClickListener(view ->{
             login();
         });
-        binding.registerLink.setOnClickListener(view ->
-                startActivity(new Intent(getApplicationContext(), RegisterActivity.class)));
+        binding.registerLink.setOnClickListener(
+                view ->
+                startActivity(new Intent(getApplicationContext(), RegisterActivity.class))
+                        //todo: delete- this line open the messages chat screen
+                //startActivity(new Intent(getApplicationContext(), ChatMessagesActivity.class))
+        );
     }
 
     private void login() {
