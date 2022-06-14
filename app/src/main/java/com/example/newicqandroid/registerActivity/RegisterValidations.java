@@ -1,6 +1,4 @@
-package com.example.newicqandroid.register;
-
-import androidx.appcompat.app.AppCompatActivity;
+package com.example.newicqandroid.registerActivity;
 
 import com.example.newicqandroid.IOnResponse;
 import com.example.newicqandroid.databinding.ActivityRegisterBinding;

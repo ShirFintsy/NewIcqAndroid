@@ -19,7 +19,7 @@
             android:name=".ChatsActivity"
             android:exported="false" />
         <activity
-            android:name=".register.RegisterActivity"
+            android:name=".registerActivity.RegisterActivity"
             android:exported="false" />
         <activity
             android:name=".LogInActivity"

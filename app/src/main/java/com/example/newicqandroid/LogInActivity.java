@@ -7,7 +7,7 @@ import android.os.Bundle;
 
 import com.example.newicqandroid.api.ApiManager;
 import com.example.newicqandroid.databinding.ActivityLoginBinding;
-import com.example.newicqandroid.register.RegisterActivity;
+import com.example.newicqandroid.registerActivity.RegisterActivity;
 
 public class LogInActivity extends AppCompatActivity implements IOnResponse {
 
