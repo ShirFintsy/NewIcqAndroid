@@ -1,4 +1,4 @@
-package com.example.newicqandroid;
+package com.example.newicqandroid.register;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

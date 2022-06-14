@@ -1,4 +1,4 @@
-package com.example.newicqandroid;
+package com.example.newicqandroid.register;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 
+import com.example.newicqandroid.IOnResponse;
 import com.example.newicqandroid.databinding.ActivityRegisterBinding;
 
 import java.io.IOException;
@@ -35,11 +36,6 @@ public class RegisterActivity extends AppCompatActivity implements IOnResponse {
     private void setListeners(){
         binding.btnRegister.setOnClickListener(this::signUp);
         binding.imageButton.setOnClickListener(this::uploadImg);
-    }
-
-    private void updateUserError(){
-        binding.userNameInput.setError("Username already exists");
-        binding.userNameInput.requestFocus();
     }
 
     public void signUp(View view) {

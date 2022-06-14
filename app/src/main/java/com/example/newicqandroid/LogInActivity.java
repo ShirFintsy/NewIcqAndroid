@@ -4,11 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.EditText;
 
 import com.example.newicqandroid.api.ApiManager;
 import com.example.newicqandroid.databinding.ActivityLoginBinding;
+import com.example.newicqandroid.register.RegisterActivity;
 
 public class LogInActivity extends AppCompatActivity implements IOnResponse {
 
