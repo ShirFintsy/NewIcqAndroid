@@ -34,11 +34,7 @@ public class ApiManager {
                @Override
                public void onResponse(Call<User> call, Response<User> response) {
                     User user = response.body();
-                    if (user != null){
-                         //result.booleanValue() = false;
-                         //func.apply(true);
-                         func.onResponseIsUserExists();
-                    }
+                    func.onResponseIsUserExists(user != null); // send true if user is exists, false otherwise
                }
 
                @Override
@@ -46,19 +42,26 @@ public class ApiManager {
 
                }
           });
+     }
 
-/*
-          try{
-               Response<User> res = call.execute();
-               User user = res.body();
-               if (user == null){
-                    result[0] = false;
+     public void validPassword(String username, String password, IOnResponse func) {
+          Call<User> call = apiWebService.getUserByUsername(username);
+          call.enqueue(new Callback<User>() {
+               @RequiresApi(api = Build.VERSION_CODES.N)
+               @Override
+               public void onResponse(Call<User> call, Response<User> response) {
+                    User user = response.body();
+                    if (user != null){
+                         func.onResponseValidPassword(user.getPassword().equals(password)); // true if equals, false otherwise
+                    } //else
+//                         func.onResponseValidPassword(false);
                }
 
-               return result[0];
-          }catch(Exception e){
-               return false;
-          }*/
+               @Override
+               public void onFailure(Call<User> call, Throwable t) {
+
+               }
+          });
      }
 
 }

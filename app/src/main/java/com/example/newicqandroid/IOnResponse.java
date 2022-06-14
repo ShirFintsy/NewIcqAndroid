@@ -1,5 +1,6 @@
 package com.example.newicqandroid;
 
 public interface IOnResponse {
-    void onResponseIsUserExists();
+    void onResponseIsUserExists(boolean x);
+    void onResponseValidPassword(boolean x);
 }

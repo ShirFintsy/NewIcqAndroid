@@ -24,5 +24,9 @@ public class User {
         lastdate = null;
     }
 
+    public String getPassword() {
+        return Password;
+    }
+
 
 }

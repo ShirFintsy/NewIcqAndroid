@@ -16,7 +16,5 @@ public class RegisterValidations {
 
     public void checkIsExists(String username, IOnResponse activity){
         apiManager.IsUserExists(username, activity);
-        //System.out.println(username + ": " + r);
-        //return  r;
     }
 }

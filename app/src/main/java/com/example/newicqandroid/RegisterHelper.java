@@ -14,6 +14,9 @@ import java.io.ByteArrayOutputStream;
 //This class contains methods that helps the registerActivity logic
 public class RegisterHelper {
 
+    /*
+    make picture rounded
+     */
     static public Bitmap getCircleBitmap(Bitmap bitmap) {
         if(bitmap == null){
             return null;
