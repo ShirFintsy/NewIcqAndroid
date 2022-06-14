@@ -7,6 +7,9 @@ import androidx.annotation.RequiresApi;
 import com.example.newicqandroid.IOnResponse;
 import com.example.newicqandroid.entities.User;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -20,6 +23,7 @@ public class ApiManager {
 
      public ApiManager(){
           retrofit = new Retrofit.Builder().baseUrl("http://10.0.2.2:5067/api/")
+                    .callbackExecutor(Executors.newSingleThreadExecutor())
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
           apiWebService = retrofit.create(IApiWebService.class);
