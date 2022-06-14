@@ -56,9 +56,7 @@ public class RegisterActivity extends AppCompatActivity implements IOnResponse {
             binding.userNameInput.requestFocus();
         }else{
             validator.checkIsExists(username, this);
-        //}else if(validator.checkIsExists(username, this)){
-            //binding.userNameInput.setError("Username already exists");
-            //binding.userNameInput.requestFocus();
+
         } if(displayName.isEmpty()){
             binding.displayNameInput.setError("Please fill out this field");
             binding.displayNameInput.requestFocus();
@@ -107,8 +105,15 @@ public class RegisterActivity extends AppCompatActivity implements IOnResponse {
 
 
     @Override
-    public void onResponseIsUserExists() {
-        binding.userNameInput.setError("Username already exists");
-        binding.userNameInput.requestFocus();
+    public void onResponseIsUserExists(boolean x) {
+        if (x) { // user is exists
+            binding.userNameInput.setError("Username already exists");
+            binding.userNameInput.requestFocus();
+        }
+    }
+
+    @Override
+    public void onResponseValidPassword(boolean x) {
+        return;
     }
 }
