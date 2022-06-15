@@ -125,10 +125,13 @@ public class RegisterActivity extends AppCompatActivity implements IOnResponse {
     public void onResponseValidation(boolean username, boolean password) {
         if (username) { // user is exists
             //binding.userNameInput.setError("Username already exists");
-            binding.userNameInput.requestFocus();
+            //binding.userNameInput.requestFocus();
             error = true;
         }else if(!error){
-            endRegistration();
+            Intent intent = new Intent(getApplicationContext(), LogInActivity.class); // todo: for now- until chat activity will word
+            intent.putExtra("username", binding.userNameInput.getText().toString());
+            startActivity(intent);
+            //endRegistration();
         }
     }
 }
