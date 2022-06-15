@@ -20,6 +20,6 @@ public class ChatsActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String username = intent.getExtras().getString("username");
-        binding.currentUser.setText(username);
+        //binding.currentUser.setText(username);
     }
 }

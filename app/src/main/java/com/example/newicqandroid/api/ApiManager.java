@@ -30,15 +30,41 @@ public class ApiManager {
      }
 
 
-     public void IsUserExists(String username, IOnResponse func) {
+//     public void IsUserExists(String username, IOnResponse func) {
+//
+//          Call<User> call = apiWebService.getUserByUsername(username);
+//          call.enqueue(new Callback<User>() {
+//               @RequiresApi(api = Build.VERSION_CODES.N)
+//               @Override
+//               public void onResponse(Call<User> call, Response<User> response) {
+//                    User user = response.body();
+//                    func.onResponseIsUserExists(user != null); // send true if user is exists, false otherwise
+//               }
+//
+//               @Override
+//               public void onFailure(Call<User> call, Throwable t) {
+//
+//               }
+//          });
+//     }
+
+     public void checkValidation(String username, String password, IOnResponse func) {
 
           Call<User> call = apiWebService.getUserByUsername(username);
           call.enqueue(new Callback<User>() {
                @RequiresApi(api = Build.VERSION_CODES.N)
                @Override
                public void onResponse(Call<User> call, Response<User> response) {
+                    boolean usernameResult = false, passwordResult = false;
                     User user = response.body();
-                    func.onResponseIsUserExists(user != null); // send true if user is exists, false otherwise
+                    if (user != null) {
+                         usernameResult = true;
+
+                         if (user.getPassword().equals(password)) {
+                              passwordResult = true;
+                         }
+                    }
+                    func.onResponseValidation(usernameResult, passwordResult); // send true if user is exists, false otherwise
                }
 
                @Override
@@ -48,24 +74,24 @@ public class ApiManager {
           });
      }
 
-     public void validPassword(String username, String password, IOnResponse func) {
-          Call<User> call = apiWebService.getUserByUsername(username);
-          call.enqueue(new Callback<User>() {
-               @RequiresApi(api = Build.VERSION_CODES.N)
-               @Override
-               public void onResponse(Call<User> call, Response<User> response) {
-                    User user = response.body();
-                    if (user != null){
-                         func.onResponseValidPassword(user.getPassword().equals(password)); // true if equals, false otherwise
-                    } //else
-//                         func.onResponseValidPassword(false);
-               }
-
-               @Override
-               public void onFailure(Call<User> call, Throwable t) {
-
-               }
-          });
-     }
+//     public void validPassword(String username, String password, IOnResponse func) {
+//          Call<User> call = apiWebService.getUserByUsername(username);
+//          call.enqueue(new Callback<User>() {
+//               @RequiresApi(api = Build.VERSION_CODES.N)
+//               @Override
+//               public void onResponse(Call<User> call, Response<User> response) {
+//                    User user = response.body();
+//                    if (user != null){
+//                         func.onResponseValidPassword(user.getPassword().equals(password)); // true if equals, false otherwise
+//                    } //else
+////                         func.onResponseValidPassword(false);
+//               }
+//
+//               @Override
+//               public void onFailure(Call<User> call, Throwable t) {
+//
+//               }
+//          });
+//     }
 
 }

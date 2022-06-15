@@ -1,5 +1,7 @@
 package com.example.newicqandroid;
 
+import static java.lang.Thread.sleep;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -13,7 +15,7 @@ public class LogInActivity extends AppCompatActivity implements IOnResponse {
 
     private ActivityLoginBinding binding;
     private final ApiManager apiManager = new ApiManager();
-    boolean checkedValidation[] = {false, false};
+    boolean validationFlags[] = {false, false};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,8 +29,8 @@ public class LogInActivity extends AppCompatActivity implements IOnResponse {
         });
         binding.registerLink.setOnClickListener(
                 view ->
-                startActivity(new Intent(getApplicationContext(), RegisterActivity.class))
-                        //todo: delete- this line open the messages chat screen
+                        startActivity(new Intent(getApplicationContext(), RegisterActivity.class))
+                //todo: delete- this line open the messages chat screen
                 //startActivity(new Intent(getApplicationContext(), ChatMessagesActivity.class))
         );
     }
@@ -37,54 +39,31 @@ public class LogInActivity extends AppCompatActivity implements IOnResponse {
         String username = binding.userNameInput.getText().toString();
         String password = binding.passwordInput.getText().toString();
 
-        //validation:
-        if(username.isEmpty()) {
-            binding.userNameInput.setError("Please fill out this field");
+        apiManager.checkValidation(username, password, this);
+    }
+
+    @Override
+    public void onResponseValidation(boolean username, boolean password) {
+        if (!username) { // user is not exists
+            binding.userNameInput.setError("User does not exists");
             binding.userNameInput.requestFocus();
-            checkedValidation[0] = false;
-        } else {
-            checkIfUserExists(username, this); // update userIsExists to false
-        }
-
-        if (password.isEmpty()) {
-            binding.passwordInput.setError("Please fill out this field");
+            validationFlags[0] = false;
+        } else
+            validationFlags[0] = true;
+        if (!password) { // not valid password
+            //binding.passwordInput.setError("Wrong password");
+            System.out.println("error");
             binding.passwordInput.requestFocus();
-            checkedValidation[1] = false;
-        } else validPassword(username, password, this);
+            validationFlags[1] = false;
+        }
+        else
+            validationFlags[1] = true;
 
-        if (checkedValidation[0] && checkedValidation[1]) {
+        if (validationFlags[0] && validationFlags[1]) {
             // enter chats activity:
-            Intent intent = new Intent(getApplicationContext(), ChatsActivity.class);
+            Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
             intent.putExtra("username", username);
             startActivity(intent);
         }
-    }
-
-    private void checkIfUserExists(String username, IOnResponse activity) {
-        apiManager.IsUserExists(username, activity);
-    }
-
-    private void validPassword(String username, String password, IOnResponse activity) {
-        apiManager.validPassword(username, password, activity);
-    }
-
-    @Override
-    public void onResponseIsUserExists(boolean x) {
-        if (!x) { // user is not exists
-            binding.userNameInput.setError("User does not exists");
-            binding.userNameInput.requestFocus();
-            checkedValidation[0] = false;
-        } else
-            checkedValidation[0] = true;
-    }
-    @Override
-    public void onResponseValidPassword(boolean x) {
-        if (!x) { // not valid password
-            binding.passwordInput.setError("Wrong password");
-            binding.passwordInput.requestFocus();
-            checkedValidation[1] = false;
-        }
-        else
-            checkedValidation[1] = true;
     }
 }

@@ -14,6 +14,7 @@ import android.view.View;
 
 import com.example.newicqandroid.ChatsActivity;
 import com.example.newicqandroid.IOnResponse;
+import com.example.newicqandroid.LogInActivity;
 import com.example.newicqandroid.databinding.ActivityRegisterBinding;
 
 import java.io.IOException;
@@ -48,16 +49,7 @@ public class RegisterActivity extends AppCompatActivity implements IOnResponse {
         String pass = binding.passwordInput.getText().toString().trim();
         String confirmPass = binding.confirmPasswordInput.getText().toString().trim();
 
-
-
-        if(username.isEmpty()) {
-            binding.userNameInput.setError("Please fill out this field");
-            binding.userNameInput.requestFocus();
-            error = true;
-        }else{
-            validator.checkIsExists(username, this);
-            //error = true;
-        } if(displayName.isEmpty()){
+      if(displayName.isEmpty()){
             binding.displayNameInput.setError("Please fill out this field");
             binding.displayNameInput.requestFocus();
             error = true;
@@ -70,10 +62,17 @@ public class RegisterActivity extends AppCompatActivity implements IOnResponse {
                     "at least one uppercase letter, one lowercase letter and one number");
             binding.passwordInput.requestFocus();
             error = true;
-        }else if(!confirmPass.equals(pass)){
+        }else if(!confirmPass.equals(pass)) {
             binding.confirmPasswordInput.setError("Not matches password field");
             binding.confirmPasswordInput.requestFocus();
             error = true;
+        } if(username.isEmpty()) {
+            binding.userNameInput.setError("Please fill out this field");
+            binding.userNameInput.requestFocus();
+            error = true;
+        }else {
+            validator.checkIsExists(username, this);
+            //error = true;
         }
 
         //if no error in validation happened
@@ -86,7 +85,7 @@ public class RegisterActivity extends AppCompatActivity implements IOnResponse {
         //todo: send the data to the webApi
 
         //move to the chats activity
-        Intent intent = new Intent(getApplicationContext(), ChatsActivity.class);
+        Intent intent = new Intent(getApplicationContext(), LogInActivity.class); // todo: for now- until chat activity will word
         intent.putExtra("username", binding.userNameInput.getText().toString());
         startActivity(intent);
     }
@@ -123,18 +122,13 @@ public class RegisterActivity extends AppCompatActivity implements IOnResponse {
 
 
     @Override
-    public void onResponseIsUserExists(boolean x) {
-        if (x) { // user is exists
-            binding.userNameInput.setError("Username already exists");
+    public void onResponseValidation(boolean username, boolean password) {
+        if (username) { // user is exists
+            //binding.userNameInput.setError("Username already exists");
             binding.userNameInput.requestFocus();
             error = true;
         }else if(!error){
             endRegistration();
         }
-    }
-
-    @Override
-    public void onResponseValidPassword(boolean x) {
-        return;
     }
 }
