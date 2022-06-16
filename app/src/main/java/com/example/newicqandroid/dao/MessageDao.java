@@ -18,8 +18,8 @@ public interface MessageDao {
     List<Message> getAll();
 
     @Transaction
-    @Query("SELECT * FROM messages WHERE fromIdUser = :username OR toIdUser = :username")
-    List<Message> getMsgsByUser(String username);
+    @Query("SELECT * FROM messages WHERE idChat = :idChat")
+    List<Message> getMsgsByChat(int idChat);
 
     @Transaction
     @Insert

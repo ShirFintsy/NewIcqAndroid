@@ -22,9 +22,9 @@ public class ChatMessagesActivity extends AppCompatActivity {
     private MessagesViewModel msgsViewModel;
     private ActivityChatMessagesBinding binding;
 
-    //todo: only for now- will be change!
-    private String connectedUser = "rotem";
-    private String otherUser = "shir";
+    private String connectedUser;
+    private String otherUser;
+    private int idChat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +34,14 @@ public class ChatMessagesActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         connectedUser = intent.getExtras().getString("username");
-
+        idChat = intent.getIntExtra("idChat", 0);
 
         msgsViewModel = new ViewModelProvider(this).get(MessagesViewModel.class);
+        msgsViewModel.init(getApplicationContext(), idChat);
+
+        otherUser = msgsViewModel.getOtherUser(connectedUser, idChat);
 
         RecyclerView msgsRecyclerView = binding.msgsRecyclerView;
-
         MessagesAdapter msgsAdapter = new MessagesAdapter(this, connectedUser);
 
         msgsRecyclerView.setAdapter(msgsAdapter);
@@ -48,18 +50,13 @@ public class ChatMessagesActivity extends AppCompatActivity {
         msgsViewModel.get().observe(this, msgsAdapter::setMsgs);
 
         binding.sendBtn.setOnClickListener(this::onSendMsg);
-
-
     }
 
     public void onSendMsg(View v){
         String msgText = binding.textSend.getText().toString();
         //send message oly if its not empty
         if(!msgText.equals("")) {
-            User other = new User(otherUser);
-            User connected = new User(connectedUser);
-            Message msg = new Message(msgText, connectedUser, otherUser, 1);
-            //MsgUsers msgUsers = new MsgUsers(msg, connected, other);
+            Message msg = new Message(msgText, connectedUser, otherUser, idChat);
 
             msgsViewModel.add(msg);
             binding.textSend.setText("");

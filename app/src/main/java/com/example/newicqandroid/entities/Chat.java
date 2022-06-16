@@ -1,7 +1,5 @@
 package com.example.newicqandroid.entities;
 
-import android.util.Pair;
-
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 

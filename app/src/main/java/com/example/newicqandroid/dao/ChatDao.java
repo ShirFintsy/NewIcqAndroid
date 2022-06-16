@@ -6,7 +6,6 @@ import androidx.room.Query;
 import androidx.room.Transaction;
 
 import com.example.newicqandroid.entities.Chat;
-import com.example.newicqandroid.entities.Message;
 
 import java.util.List;
 
@@ -16,7 +15,13 @@ public interface ChatDao {
 
     @Transaction
     @Query("SELECT * FROM chats WHERE IdChat = :chatId")
-    List<Chat> getChat(int chatId);
+    Chat getChatById(int chatId);
+
+    @Transaction
+    @Query("SELECT * FROM chats WHERE (idUser1 = :user1 AND idUser2 = :user2) " +
+            "OR (idUser1 = :user2 AND idUser2 = :user1)")
+    Chat getChatByUsers(String user1, String user2);
+
 
     @Transaction
     @Insert
