@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.newicqandroid.R;
-import com.example.newicqandroid.entities.MsgUsers;
+import com.example.newicqandroid.entities.Message;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
     public static final int SENT_MSG = 1;
 
     private LayoutInflater inflater;
-    private List<MsgUsers> msgs;
+    private List<Message> msgs;
     private String connectedUser;
 
     public MessagesAdapter(Context context, String connectedUser){
@@ -28,12 +28,12 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
         this.connectedUser = connectedUser;
     }
 
-    public void setMsgs(List<MsgUsers> msgs){
+    public void setMsgs(List<Message> msgs){
         this.msgs = msgs;
         notifyDataSetChanged();
     }
 
-    public List<MsgUsers> getMsgs(){
+    public List<Message> getMsgs(){
         return msgs;
     }
 
@@ -54,9 +54,9 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
     @Override
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
         if(msgs != null) {
-            MsgUsers currMsg = msgs.get(position);
-            holder.content.setText(currMsg.getMessage().getContent());
-            holder.time.setText(currMsg.getMessage().getCreated());
+            Message currMsg = msgs.get(position);
+            holder.content.setText(currMsg.getContent());
+            holder.time.setText(currMsg.getCreated());
         }
     }
 
@@ -69,7 +69,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
 
     @Override
     public int getItemViewType(int position) {
-        if(msgs.get(position).getFrom().getName().equals(connectedUser))
+        if(msgs.get(position).getFromIdUser().equals(connectedUser))
             return SENT_MSG;
         else
             return RECEIVED_MSG;

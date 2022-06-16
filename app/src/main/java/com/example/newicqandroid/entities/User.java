@@ -1,52 +1,55 @@
 package com.example.newicqandroid.entities;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity
+@Entity(tableName = "users")
 public class User {
 
-    private String Id;
-    private String Name;
-    private String Password;
-    private String Image;
-    private String Server;
+    @NonNull
+    @PrimaryKey(autoGenerate = false)
+    private String idUser;
+    private String name;
+    private String password;
+    private String image;
+    private String server;
     private String last;
     private String lastdate;
 
-    public User(String id, String name, String server){
-        Id = id;
-        Name = name;
-        Server = server;
-        Password = null;
-        Image = null;
+    public User(String idUser, String name, String server){
+        this.idUser = idUser;
+        this.name = name;
+        this.server = server;
+        password = null;
+        image = null;
         last = null;
         lastdate = null;
     }
 
     //todo: maybe will be deleted- just for now
-    public User(String name){
-        Name = name;
+    public User(String username){
+        this.idUser = username;
     }
 
     public String getPassword() {
-        return Password;
+        return password;
     }
 
-    public String getId() {
-        return Id;
+    public String getIdUser() {
+        return idUser;
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public String getImage() {
-        return Image;
+        return image;
     }
 
     public String getServer() {
-        return Server;
+        return server;
     }
 
     public String getLast() {
@@ -57,4 +60,31 @@ public class User {
         return lastdate;
     }
 
+    public void setIdUser(String idUser) {
+        this.idUser = idUser;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public void setServer(String server) {
+        this.server = server;
+    }
+
+    public void setLast(String last) {
+        this.last = last;
+    }
+
+    public void setLastdate(String lastdate) {
+        this.lastdate = lastdate;
+    }
 }
