@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 
-import com.example.newicqandroid.ChatsActivity;
 import com.example.newicqandroid.IOnResponse;
 import com.example.newicqandroid.LogInActivity;
 import com.example.newicqandroid.databinding.ActivityRegisterBinding;

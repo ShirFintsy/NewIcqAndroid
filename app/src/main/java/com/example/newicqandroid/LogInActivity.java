@@ -29,10 +29,15 @@ public class LogInActivity extends AppCompatActivity implements IOnResponse {
         });
         binding.registerLink.setOnClickListener(
                 view ->
-                        startActivity(new Intent(getApplicationContext(), RegisterActivity.class))
-                //todo: delete- this line open the messages chat screen
-                //startActivity(new Intent(getApplicationContext(), ChatMessagesActivity.class))
-        );
+                    startActivity(new Intent(getApplicationContext(), RegisterActivity.class)));
+
+
+        binding.toChatsButton.setOnClickListener(  view ->{
+                String username = binding.userNameInput.getText().toString();
+                Intent intent = new Intent(getApplicationContext(), ChatsActivity.class);
+                intent.putExtra("username", username);
+                startActivity(intent);
+        });
     }
 
     private void login() {
