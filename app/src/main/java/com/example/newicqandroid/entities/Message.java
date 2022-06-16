@@ -2,7 +2,6 @@ package com.example.newicqandroid.entities;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import androidx.room.Relation;
 
 import java.util.Date;
 

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.example.newicqandroid.databinding.ActivityChatsBinding;
+import com.example.newicqandroid.entities.Chat;
 import com.example.newicqandroid.registerActivity.RegisterActivity;
 
 public class ChatsActivity extends AppCompatActivity {
@@ -31,11 +32,16 @@ public class ChatsActivity extends AppCompatActivity {
     }
 
     private void goToChat(View v){
-
+        //todo: will be deleted- temporary for checking the database
+        AppLocalDB db = AppLocalDB.createAppDBInstance(getApplicationContext());
+        if(db.chatDao().getChatByUsers("rotem", "shir") == null) {
+            db.chatDao().Insert(new Chat("rotem", "shir"));
+        }
+        Chat c = db.chatDao().getChatByUsers("rotem", "shir");
         //todo: will be changed
         Intent intent = new Intent(getApplicationContext(), ChatMessagesActivity.class);
         intent.putExtra("username", "rotem");
-        intent.putExtra("chatId", "1");
+        intent.putExtra("idChat", c.getIdChat());
         startActivity(intent);
     }
 

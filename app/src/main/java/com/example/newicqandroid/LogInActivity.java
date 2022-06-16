@@ -32,6 +32,7 @@ public class LogInActivity extends AppCompatActivity implements IOnResponse {
                     startActivity(new Intent(getApplicationContext(), RegisterActivity.class)));
 
 
+        // todo: temporary button
         binding.toChatsButton.setOnClickListener(  view ->{
                 String username = binding.userNameInput.getText().toString();
                 Intent intent = new Intent(getApplicationContext(), ChatsActivity.class);
@@ -65,7 +66,7 @@ public class LogInActivity extends AppCompatActivity implements IOnResponse {
             validationFlags[1] = true;
 
         if (validationFlags[0] && validationFlags[1]) {
-            // enter chats activity:
+            // todo: enter chats activity:
             Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
             intent.putExtra("username", username);
             startActivity(intent);
