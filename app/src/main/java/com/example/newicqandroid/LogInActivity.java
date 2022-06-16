@@ -61,7 +61,7 @@ public class LogInActivity extends AppCompatActivity implements IOnResponse {
 
         if (validationFlags[0] && validationFlags[1]) {
             // enter chats activity:
-            Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
+            Intent intent = new Intent(getApplicationContext(), ChatsActivity.class);
             intent.putExtra("username", username);
             startActivity(intent);
         }
