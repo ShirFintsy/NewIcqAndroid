@@ -1,53 +1,90 @@
 package com.example.newicqandroid.entities;
 
 import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 import java.util.Date;
 
 
-@Entity
+@Entity(tableName = "messages")
 public class Message {
 
-    private int Id;
-    private String Content;
-    private String  Created;
-    private boolean Sent;
+    @PrimaryKey(autoGenerate = true)
+    private int idMsg;
 
-    public Message(String content){
-        Content = content;
-        Created = new Date().toString();
+    private int idChat;
+    private String fromIdUser;
+    private String toIdUser;
+
+    private String content;
+    private String created;
+    private boolean sent;
+
+    public Message(){}
+
+
+    public Message(String content, String from, String to, int idChat){
+        this.idChat = idChat;
+        this.content = content;
+        created = new Date().toString();
+        fromIdUser = from;
+        toIdUser = to;
     }
 
-    public int getId() {
-        return Id;
+    public int getIdChat() {
+        return idChat;
     }
 
-    public void setId(int id) {
-        Id = id;
+    public void setIdChat(int idChat) {
+        this.idChat = idChat;
+    }
+
+    public String getFromIdUser() {
+        return fromIdUser;
+    }
+
+    public void setFromIdUser(String fromIdUser) {
+        this.fromIdUser = fromIdUser;
+    }
+
+    public String getToIdUser() {
+        return toIdUser;
+    }
+
+    public void setToIdUser(String toIdUser) {
+        this.toIdUser = toIdUser;
+    }
+
+    public int getIdMsg() {
+        return idMsg;
+    }
+
+    public void setIdMsg(int idMsg) {
+        this.idMsg = idMsg;
     }
 
     public String getContent() {
-        return Content;
+        return content;
     }
 
     public void setContent(String content) {
-        Content = content;
+        this.content = content;
     }
 
     public String getCreated() {
-        return Created;
+        return created;
     }
 
     public void setCreated(String created) {
-        Created = created;
+        this.created = created;
     }
 
     public boolean isSent() {
-        return Sent;
+        return sent;
     }
 
     public void setSent(boolean sent) {
-        Sent = sent;
+        this.sent = sent;
     }
 
 

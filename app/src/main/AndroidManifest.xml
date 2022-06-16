@@ -17,10 +17,10 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31" >
         <activity
-            android:name=".ChatMessagesActivity"
+            android:name=".ChatsActivity"
             android:exported="false" />
         <activity
-            android:name=".ChatsActivity"
+            android:name=".ChatMessagesActivity"
             android:exported="false" />
         <activity
             android:name=".registerActivity.RegisterActivity"

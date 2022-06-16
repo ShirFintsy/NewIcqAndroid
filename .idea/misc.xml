@@ -18,11 +18,15 @@
         <entry key="app/src/main/res/drawable/message_sent_container.xml" value="0.25" />
         <entry key="app/src/main/res/drawable/rounded_circle.xml" value="0.248" />
         <entry key="app/src/main/res/drawable/send_button.xml" value="0.193" />
-        <entry key="app/src/main/res/layout/activity_chats.xml" value="0.17300724637681159" />
-        <entry key="app/src/main/res/layout/activity_login.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_chat_messages.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_chats.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.19667590027700832" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.19908814589665655" />
         <entry key="app/src/main/res/layout/activity_messages.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/activity_register.xml" value="0.381294964028777" />
+        <entry key="app/src/main/res/layout/activity_register.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/content_main.xml" value="0.3564102564102564" />
+        <entry key="app/src/main/res/layout/fragment_first.xml" value="0.3564102564102564" />
+        <entry key="app/src/main/res/layout/fragment_second.xml" value="0.3564102564102564" />
         <entry key="app/src/main/res/layout/layout_message.xml" value="0.30185185185185187" />
         <entry key="app/src/main/res/layout/layout_receive_message.xml" value="0.41794871794871796" />
         <entry key="app/src/main/res/layout/layout_recieve_message.xml" value="0.3260416666666667" />
