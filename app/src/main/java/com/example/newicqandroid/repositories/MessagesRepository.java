@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.newicqandroid.entities.Message;
-import com.example.newicqandroid.entities.MsgUsers;
 import com.example.newicqandroid.entities.User;
 
 import java.util.LinkedList;
@@ -17,32 +16,32 @@ public class MessagesRepository {
     public MessagesRepository(){
         msgsListData = new MessagesListData();
     }
-    public LiveData<List<MsgUsers>> getMsgs(){
+    public LiveData<List<Message>> getMsgs(){
         return msgsListData;
     }
 
-    public void addMsg(MsgUsers msg){
+    public void addMsg(Message msg){
         msgsListData.add(msg);
 
     }
 
-    class MessagesListData extends MutableLiveData<List<MsgUsers>>{
+    class MessagesListData extends MutableLiveData<List<Message>>{
         public MessagesListData(){
             super();
 
             //todo: will be changed!
             User shir =  new User("shir");
             User rotem =  new User("rotem");
-            List<MsgUsers> msgs = new LinkedList<>();
-            msgs.add(new MsgUsers(new Message("hi"), rotem, shir));
-            msgs.add(new MsgUsers(new Message("by"), shir, rotem));
+            List<Message> msgs = new LinkedList<>();
+            msgs.add(new Message("hi", "rotem", "shir", 1));
+            msgs.add(new Message("by", "shir", "rotem", 1));
 
             setValue(msgs);
 
         }
 
-        public void add(MsgUsers msg){
-            List<MsgUsers> msgs = getValue();
+        public void add(Message msg){
+            List<Message> msgs = getValue();
             if(msgs != null){
                 msgs.add(msg);
             }

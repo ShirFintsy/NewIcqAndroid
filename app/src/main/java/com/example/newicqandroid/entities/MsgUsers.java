@@ -1,8 +1,9 @@
-package com.example.newicqandroid.entities;
+/**package com.example.newicqandroid.entities;
 
+import androidx.room.Embedded;
 import androidx.room.Entity;
 
-@Entity
+@Entity(tableName = "msgUsers")
 public class MsgUsers {
 
     private Message Message;
@@ -43,3 +44,4 @@ public class MsgUsers {
 
 
 }
+**/
