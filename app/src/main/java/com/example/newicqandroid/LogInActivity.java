@@ -9,6 +9,7 @@ import android.os.Bundle;
 
 import com.example.newicqandroid.api.ApiManager;
 import com.example.newicqandroid.databinding.ActivityLoginBinding;
+import com.example.newicqandroid.entities.User;
 import com.example.newicqandroid.registerActivity.RegisterActivity;
 
 public class LogInActivity extends AppCompatActivity implements IOnResponse {
@@ -72,4 +73,7 @@ public class LogInActivity extends AppCompatActivity implements IOnResponse {
             startActivity(intent);
         }
     }
+
+    @Override
+    public void onResponseGetUser(User user) { }
 }

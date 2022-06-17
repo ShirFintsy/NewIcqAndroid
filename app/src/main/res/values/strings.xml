@@ -3,4 +3,6 @@
     <string name="Login">Login</string>
     <string name="notRegister">Not register? Click here to register</string>
     <string name="addChat">Add Chat</string>
+    <string name="addChatQuestion">Who would you like to add?</string>
+    <string name="add">Add</string>
 </resources>

@@ -18,7 +18,7 @@ public interface UserDao {
     List<User> getAll();
 
     @Transaction
-    @Query("SELECT * FROM users WHERE idUser = :username")
+    @Query("SELECT * FROM users WHERE Id = :username")
     User getByUsername(String username);
 
     @Transaction
