@@ -18,7 +18,7 @@ import java.util.List;
 public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.UsersViewHolder>{
 
     private final LayoutInflater inflater;
-    private List<User> chats = new ArrayList<>();
+    private final List<User> chats = new ArrayList<>();
 
     static class UsersViewHolder extends RecyclerView.ViewHolder{
         private final TextView user;
@@ -26,7 +26,7 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.User
 
         private UsersViewHolder(View view){
             super(view);
-            this.user = view.findViewById(R.id.userName);
+            this.user = view.findViewById(R.id.userChat);
             this.date = view.findViewById(R.id.date);
         }
     }
@@ -37,7 +37,7 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.User
 
     public void addChat(User user){
         this.chats.add(user);
-        notifyDataSetChanged();
+        notifyDataSetChanged(); // not working when
     }
 
     public List<User> getChats(){
@@ -55,7 +55,7 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.User
     public void onBindViewHolder(@NonNull UsersViewHolder holder, int position) {
         if(chats != null) {
             User currentUser = chats.get(position); // get user info from list by position
-            holder.user.setText(currentUser.getLast());
+            holder.user.setText(currentUser.getId());
             holder.date.setText(currentUser.getLastdate());
         }
     }

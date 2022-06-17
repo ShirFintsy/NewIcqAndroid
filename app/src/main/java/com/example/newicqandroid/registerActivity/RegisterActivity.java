@@ -15,6 +15,7 @@ import android.view.View;
 import com.example.newicqandroid.IOnResponse;
 import com.example.newicqandroid.LogInActivity;
 import com.example.newicqandroid.databinding.ActivityRegisterBinding;
+import com.example.newicqandroid.entities.User;
 
 import java.io.IOException;
 
@@ -133,4 +134,7 @@ public class RegisterActivity extends AppCompatActivity implements IOnResponse {
             //endRegistration();
         }
     }
+
+    @Override
+    public void onResponseGetUser(User user) { }
 }

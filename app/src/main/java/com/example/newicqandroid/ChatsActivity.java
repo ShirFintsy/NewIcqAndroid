@@ -1,26 +1,32 @@
 package com.example.newicqandroid;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
 import com.example.newicqandroid.adapters.UsersListAdapter;
+import com.example.newicqandroid.api.ApiManager;
 import com.example.newicqandroid.databinding.ActivityChatsBinding;
-import com.example.newicqandroid.databinding.ActivityLoginBinding;
 import com.example.newicqandroid.entities.User;
 import com.example.newicqandroid.entities.Chat;
-import com.example.newicqandroid.registerActivity.RegisterActivity;
 
-public class ChatsActivity extends AppCompatActivity {
+public class ChatsActivity extends AppCompatActivity implements IOnResponse {
 
     private ActivityChatsBinding binding;
     private String connectedUser = "rotem";
     private String otherUser = "shir";
+    private ApiManager apiManager = new ApiManager();
+    UsersListAdapter usersListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,21 +37,22 @@ public class ChatsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String username = intent.getExtras().getString("username");
         binding.username.setText(username);
+        //todo: add profile picture from user by api
 
         RecyclerView usersList = binding.userChatsList;
-        UsersListAdapter usersListAdapter = new UsersListAdapter(this, connectedUser);
+        usersListAdapter = new UsersListAdapter(this, connectedUser);
         usersList.setAdapter(usersListAdapter);
         usersList.setLayoutManager(new LinearLayoutManager(this));
-
-        usersListAdapter.addChat(new User("hilla"));
-//        usersListAdapter.addChat(new User("tomer"));
-//        usersListAdapter.addChat(new User("rommi"));
+        usersListAdapter.addChat(new User("tomer"));
 
         // set listener to the add chat floating button
         binding.addChat.setOnClickListener(this::addChat);
 
         // todo: this id temporary button- in the future will be changed to the chat button
         binding.tmpButton.setOnClickListener(this::goToChat);
+    }
+    public void addThisUser(String username){
+        apiManager.getUser(username, this);
     }
 
     private void goToChat(View v){
@@ -63,5 +70,30 @@ public class ChatsActivity extends AppCompatActivity {
     }
 
     private void addChat(View v){
+        Intent intent = new Intent(getApplicationContext(), AddChatsActivity.class);
+        someActivityResultLauncher.launch(intent);
     }
+
+    @Override
+    public void onResponseValidation(boolean username, boolean password) { }
+
+    @Override
+    public void onResponseGetUser(User user) {
+        usersListAdapter.addChat(user);
+    }
+
+    ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        // There are no request codes
+                        Intent data = result.getData();
+                        String user = data.getExtras().getString("username");
+                        addThisUser(user);
+                        //apiManager.getUser(user, );
+                    }
+                }
+            });
 }
