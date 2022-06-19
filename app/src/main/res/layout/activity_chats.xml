@@ -6,47 +6,85 @@
     android:layout_height="match_parent"
     tools:context=".ChatsActivity">
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
+
 
         <ImageView
-            android:id="@+id/profilePicture"
-            android:layout_width="62dp"
-            android:layout_height="73dp"
-            android:contentDescription="@string/profile_image"
-            android:src="@drawable/add_user_icon" />
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="10sp"
+            android:src="@drawable/default_picture"
+            android:id="@id/profilePicture"/>
 
         <TextView
             android:id="@+id/username"
-            android:layout_width="match_parent"
-            android:layout_height="69dp"
-            android:layout_weight="0"
-            android:text="" />
+            android:layout_width="300dp"
+            android:layout_height="100dp"
+            android:text="@string/user_name"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp"
+            android:textSize="35dp"
+            android:gravity="center"
+            android:textColor="@color/purple_500"
+            android:textStyle="bold"/>
 
         <Button
             android:id="@+id/tmpButton"
             android:layout_width="match_parent"
-            android:layout_height="189dp"
-            android:layout_weight="1"
+            android:layout_height="70dp"
+            android:layout_marginTop="600dp"
             android:text="go to chat messages screen" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/userChatsList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/lightGray" />
-    </LinearLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/userChatsList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="110dp"
+                    android:background="@color/lightGray" />
+    </RelativeLayout>
+    <!--    <LinearLayout-->
+<!--        android:id="@+id/linearLayout"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:orientation="vertical">-->
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintStart_toEndOf="parent">
+<!--        <ImageView-->
+<!--            android:id="@+id/profilePicture"-->
+<!--            android:layout_width="62dp"-->
+<!--            android:layout_height="73dp"-->
+<!--            android:contentDescription="@string/profile_image"-->
+<!--            android:src="@drawable/add_user_icon" />-->
 
-    </LinearLayout>
+<!--        <TextView-->
+<!--            android:id="@+id/username"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="69dp"-->
+<!--            android:layout_weight="0"-->
+<!--            android:text="" />-->
+
+<!--        <Button-->
+<!--            android:id="@+id/tmpButton"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="189dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="go to chat messages screen" />-->
+
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:id="@+id/userChatsList"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="@color/lightGray" />-->
+<!--    </LinearLayout>-->
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:orientation="vertical"-->
+<!--        app:layout_constraintStart_toEndOf="parent">-->
+
+<!--    </LinearLayout>-->
 
 
 
