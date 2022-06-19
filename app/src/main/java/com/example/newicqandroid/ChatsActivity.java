@@ -20,13 +20,17 @@ import com.example.newicqandroid.databinding.ActivityChatsBinding;
 import com.example.newicqandroid.entities.User;
 import com.example.newicqandroid.entities.Chat;
 
-public class ChatsActivity extends AppCompatActivity implements IOnResponse {
+import java.util.ArrayList;
+import java.util.List;
+
+public class ChatsActivity extends AppCompatActivity implements IOnResponse{
 
     private ActivityChatsBinding binding;
     private String connectedUser = "rotem";
     private String otherUser = "shir";
     private ApiManager apiManager = new ApiManager();
-    UsersListAdapter usersListAdapter;
+    private UsersListAdapter usersListAdapter;
+    private List<User> userList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,7 @@ public class ChatsActivity extends AppCompatActivity implements IOnResponse {
         usersList.setAdapter(usersListAdapter);
         usersList.setLayoutManager(new LinearLayoutManager(this));
         usersListAdapter.addChat(new User("tomer"));
+        usersListAdapter.addChat(new User("hilla"));
 
         // set listener to the add chat floating button
         binding.addChat.setOnClickListener(this::addChat);
@@ -79,7 +84,10 @@ public class ChatsActivity extends AppCompatActivity implements IOnResponse {
 
     @Override
     public void onResponseGetUser(User user) {
-        usersListAdapter.addChat(user);
+       if (user != null) {
+           usersListAdapter.addChat(user);
+           usersListAdapter.notifyDataSetChanged();
+       }
     }
 
     ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
