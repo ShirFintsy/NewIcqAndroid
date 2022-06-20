@@ -11,12 +11,13 @@
         android:layout_height="match_parent">
 
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@id/profilePicture"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginTop="10sp"
-            android:src="@drawable/default_picture"
-            android:id="@id/profilePicture"/>
+            android:scaleType="centerCrop"
+            android:src="@drawable/default_picture" />
 
         <TextView
             android:id="@+id/username"
@@ -30,19 +31,19 @@
             android:textColor="@color/purple_500"
             android:textStyle="bold"/>
 
-        <Button
-            android:id="@+id/tmpButton"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:layout_marginTop="600dp"
-            android:text="go to chat messages screen" />
+<!--        <Button-->
+<!--            android:id="@+id/tmpButton"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="70dp"-->
+<!--            android:layout_marginTop="600dp"-->
+<!--            android:text="go to chat messages screen" />-->
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/userChatsList"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="110dp"
-                    android:background="@color/lightGray" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/userChatsList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="110dp" />
+
     </RelativeLayout>
     <!--    <LinearLayout-->
 <!--        android:id="@+id/linearLayout"-->

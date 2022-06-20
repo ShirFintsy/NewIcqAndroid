@@ -2,11 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="140dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="140dp"
+        android:background="@color/cream">
 
 
         <TextView
@@ -15,42 +16,49 @@
             android:layout_height="40dp"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="20dp"
-            android:layout_marginEnd="-6dp"
             android:text="user"
             android:textAlignment="center"
             android:textSize="30sp"
             android:textStyle="bold" />
+
         <TextView
             android:id="@+id/msg"
             android:layout_width="300dp"
             android:layout_height="30dp"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="60dp"
-            android:layout_marginEnd="-6dp"
             android:text="last msg"
             android:textAlignment="center"
             android:textSize="20sp"
             android:textStyle="bold" />
+
         <TextView
             android:id="@+id/msgDate"
             android:layout_width="300dp"
             android:layout_height="30dp"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="90dp"
-            android:layout_marginEnd="-6dp"
             android:text="last msg date"
             android:textAlignment="center"
             android:textSize="20sp"
             android:textStyle="bold" />
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profilePicture"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="20dp"
+            android:scaleType="centerCrop"
             android:src="@drawable/default_picture" />
-            
+
+<!--        <Button-->
+<!--            android:id="@+id/backButton"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="120dp"-->
+<!--            android:background="?android:attr/selectableItemBackground"-->
+<!--            android:text="" />-->
+
     </RelativeLayout>
 <!--    <LinearLayout-->
 <!--        android:id="@+id/usersList"-->
