@@ -11,7 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-public class AddChatsActivity extends AppCompatActivity{
+public class AddChatsActivity extends AppCompatActivity implements IOnResponse{
     private ActivityAddChatsBinding binding;
     private ApiManager apiManager = new ApiManager();
     @Override
@@ -21,13 +21,29 @@ public class AddChatsActivity extends AppCompatActivity{
         setContentView(binding.getRoot());
         binding.addButton.setOnClickListener(view-> {
             String user = binding.addChatInput.getText().toString();
-
-            Intent toIntent = new Intent(getApplicationContext(), ChatsActivity.class);
-            toIntent.putExtra("username", user);
-            setResult(RESULT_OK, toIntent);
-            finish();
+            apiManager.getUser(user, this);
         });
 
     }
 
+    @Override
+    public void onResponseValidation(boolean username, boolean password) { }
+
+    @Override
+    public void onResponseGetUser(User user) {
+        if (user == null) {
+            binding.addChatInput.setError("User does not exists");
+            binding.addChatInput.requestFocus();
+        } else {
+            AppLocalDB db = AppLocalDB.createAppDBInstance(getApplicationContext());
+            if(db.userDao().getByUsername(user.getId()) == null) { // check if user is already in db
+                db.userDao().Insert(user); // insert user into db
+            }
+
+            Intent toIntent = new Intent(getApplicationContext(), ChatsActivity.class);
+            toIntent.putExtra("username", user.getId());
+            setResult(RESULT_OK, toIntent);
+            finish();
+        }
+    }
 }

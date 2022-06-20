@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,38 +14,52 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.newicqandroid.R;
 import com.example.newicqandroid.entities.User;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.UsersViewHolder>{
 
     private final LayoutInflater inflater;
-    private List<User> chats = new ArrayList<>();
+    private List<User> chats;
+    private final String connectedUser;
+    private onUserListener listener;
 
-    static class UsersViewHolder extends RecyclerView.ViewHolder{
+    static class UsersViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView user;
         private TextView lastMsg;
         private TextView date;
         private ImageView profilePicture;
+        private onUserListener listener;
 
-        private UsersViewHolder(View view){
+        private UsersViewHolder(View view, onUserListener onUserListener){
             super(view);
+            this.listener = onUserListener;
             this.user = view.findViewById(R.id.user);
             this.lastMsg = view.findViewById(R.id.msg);
             this.date = view.findViewById(R.id.msgDate);
             this.profilePicture = view.findViewById(R.id.profilePicture);
+            view.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            listener.onUserClick(getAdapterPosition());
         }
     }
 
-    public UsersListAdapter(Context context, String connectedUser){
-        inflater = LayoutInflater.from(context);
+    public UsersListAdapter(Context context, String connectedUser, onUserListener userListener){
+        this.inflater = LayoutInflater.from(context);
+        this.connectedUser = connectedUser;
+        this.listener = userListener;
+        this.chats = new ArrayList<>();
     }
 
     public void addChat(User user){
-        this.chats.add(user);
-        //notifyDataSetChanged(); // not working when adding from outside
+        if(!chats.contains(user)){
+            chats.add(user);
+        }
+        //this.chats.add(user);
+        notifyDataSetChanged(); // not working when adding from outside
     }
 
     public List<User> getChats(){
@@ -55,7 +70,7 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.User
     @Override
     public UsersListAdapter.UsersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.user_layout, parent, false);
-        return new UsersViewHolder(view);
+        return new UsersViewHolder(view, listener);
     }
 
     @Override
@@ -69,7 +84,26 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.User
         }
     }
 
+//    public void goToMsgs(View v){
+//        AppLocalDB db = AppLocalDB.createAppDBInstance(this); //???
+//        TextView user = v.findViewById(R.id.user);
+//        String otherUser = user.getText().toString();
+//
+//        if(db.chatDao().getChatByUsers(connectedUser, otherUser) == null) {
+//            db.chatDao().Insert(new Chat(connectedUser, otherUser));
+//        }
+//
+//        Chat c = db.chatDao().getChatByUsers(connectedUser, otherUser);
+//
+//        Intent intent = new Intent(this, ChatMessagesActivity.class);
+//        intent.putExtra("username", connectedUser);
+//        intent.putExtra("idChat", c.getIdChat());
+//        startActivity(intent);
+//    }
 
+    public interface onUserListener {
+        void onUserClick(int position);
+    }
     @Override
     public int getItemCount() {
         if(chats == null)

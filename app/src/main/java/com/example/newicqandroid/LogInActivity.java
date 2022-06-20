@@ -30,16 +30,8 @@ public class LogInActivity extends AppCompatActivity implements IOnResponse {
         });
         binding.registerLink.setOnClickListener(
                 view ->
-                    startActivity(new Intent(getApplicationContext(), RegisterActivity.class)));
-
-
-        // todo: temporary button
-        binding.toChatsButton.setOnClickListener(  view ->{
-                String username = binding.userNameInput.getText().toString();
-                Intent intent = new Intent(getApplicationContext(), ChatsActivity.class);
-                intent.putExtra("username", username);
-                startActivity(intent);
-        });
+                    startActivity(new Intent(getApplicationContext(), RegisterActivity.class))
+        );
     }
 
     private void login() {

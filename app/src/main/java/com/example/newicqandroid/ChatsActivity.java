@@ -13,6 +13,8 @@ import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.newicqandroid.adapters.UsersListAdapter;
 import com.example.newicqandroid.api.ApiManager;
@@ -23,14 +25,13 @@ import com.example.newicqandroid.entities.Chat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChatsActivity extends AppCompatActivity implements IOnResponse{
+public class ChatsActivity extends AppCompatActivity implements UsersListAdapter.onUserListener {
 
     private ActivityChatsBinding binding;
-    private String connectedUser = "rotem";
-    private String otherUser = "shir";
+    private String connectedUser;
     private ApiManager apiManager = new ApiManager();
     private UsersListAdapter usersListAdapter;
-    private List<User> userList = new ArrayList<>();
+    private List<User> userList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,26 +39,36 @@ public class ChatsActivity extends AppCompatActivity implements IOnResponse{
         binding = ActivityChatsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        userList = new ArrayList<>();
+
         Intent intent = getIntent();
         String username = intent.getExtras().getString("username");
         binding.username.setText(username);
+        connectedUser = username;
         //todo: add profile picture from user by api
 
         RecyclerView usersList = binding.userChatsList;
-        usersListAdapter = new UsersListAdapter(this, connectedUser);
+        usersListAdapter = new UsersListAdapter(this, connectedUser, this);
         usersList.setAdapter(usersListAdapter);
         usersList.setLayoutManager(new LinearLayoutManager(this));
-        usersListAdapter.addChat(new User("tomer"));
-        usersListAdapter.addChat(new User("hilla"));
+        //debug:
+        User tomer = new User("tomer");
+        User hilla = new User("hilla");
+        usersListAdapter.addChat(tomer);
+        userList.add(tomer);
+        usersListAdapter.addChat(hilla);
+        userList.add(hilla);
 
         // set listener to the add chat floating button
         binding.addChat.setOnClickListener(this::addChat);
-
-        // todo: this id temporary button- in the future will be changed to the chat button
-        binding.tmpButton.setOnClickListener(this::goToChat);
     }
     public void addThisUser(String username){
-        apiManager.getUser(username, this);
+        AppLocalDB db = AppLocalDB.createAppDBInstance(getApplicationContext());
+        User user = db.userDao().getByUsername(username);
+        if (user != null) {
+           userList.add(user);
+           usersListAdapter.addChat(user);
+       }
     }
 
     private void goToChat(View v){
@@ -79,16 +90,16 @@ public class ChatsActivity extends AppCompatActivity implements IOnResponse{
         someActivityResultLauncher.launch(intent);
     }
 
-    @Override
-    public void onResponseValidation(boolean username, boolean password) { }
-
-    @Override
-    public void onResponseGetUser(User user) {
-       if (user != null) {
-           usersListAdapter.addChat(user);
-           usersListAdapter.notifyDataSetChanged();
-       }
-    }
+//    @Override
+//    public void onResponseValidation(boolean username, boolean password) { }
+//
+//    @Override
+//    public void onResponseGetUser(User user) {
+//       if (user != null) {
+//           userList.add(user);
+//           usersListAdapter.addChat(user);
+//       }
+//    }
 
     ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -100,8 +111,27 @@ public class ChatsActivity extends AppCompatActivity implements IOnResponse{
                         Intent data = result.getData();
                         String user = data.getExtras().getString("username");
                         addThisUser(user);
-                        //apiManager.getUser(user, );
+                        //apiManager.getUser(user,this);
                     }
                 }
             });
+
+    @Override
+    public void onUserClick(int position) {
+        AppLocalDB db = AppLocalDB.createAppDBInstance(getApplicationContext());
+        User user = userList.get(position);
+        String otherUser = user.getId();
+
+
+        if(db.chatDao().getChatByUsers(connectedUser, otherUser) == null) {
+            db.chatDao().Insert(new Chat(connectedUser, otherUser));
+        }
+
+        Chat c = db.chatDao().getChatByUsers(connectedUser, otherUser);
+
+        Intent intent = new Intent(getApplicationContext(), ChatMessagesActivity.class);
+        intent.putExtra("username", connectedUser);
+        intent.putExtra("idChat", c.getIdChat());
+        startActivity(intent);
+    }
 }
