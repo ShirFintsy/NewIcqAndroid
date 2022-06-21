@@ -58,7 +58,6 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.User
         if(!chats.contains(user)){
             chats.add(user);
         }
-        //this.chats.add(user);
         notifyDataSetChanged(); // not working when adding from outside
     }
 
@@ -80,26 +79,9 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.User
             holder.user.setText(currentUser.getId());
             holder.lastMsg.setText(currentUser.getLast());
             holder.date.setText(currentUser.getLastdate());
-            //holder.profilePicture.set?
+            //holder.profilePicture.setImageBitmap(currentUser.decodeImg());
         }
     }
-
-//    public void goToMsgs(View v){
-//        AppLocalDB db = AppLocalDB.createAppDBInstance(this); //???
-//        TextView user = v.findViewById(R.id.user);
-//        String otherUser = user.getText().toString();
-//
-//        if(db.chatDao().getChatByUsers(connectedUser, otherUser) == null) {
-//            db.chatDao().Insert(new Chat(connectedUser, otherUser));
-//        }
-//
-//        Chat c = db.chatDao().getChatByUsers(connectedUser, otherUser);
-//
-//        Intent intent = new Intent(this, ChatMessagesActivity.class);
-//        intent.putExtra("username", connectedUser);
-//        intent.putExtra("idChat", c.getIdChat());
-//        startActivity(intent);
-//    }
 
     public interface onUserListener {
         void onUserClick(int position);

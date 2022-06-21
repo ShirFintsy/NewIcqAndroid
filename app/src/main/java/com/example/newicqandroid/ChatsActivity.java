@@ -10,6 +10,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
@@ -21,6 +23,7 @@ import com.example.newicqandroid.api.ApiManager;
 import com.example.newicqandroid.databinding.ActivityChatsBinding;
 import com.example.newicqandroid.entities.User;
 import com.example.newicqandroid.entities.Chat;
+import com.example.newicqandroid.viewModels.ChatsViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +35,7 @@ public class ChatsActivity extends AppCompatActivity implements UsersListAdapter
     private ApiManager apiManager = new ApiManager();
     private UsersListAdapter usersListAdapter;
     private List<User> userList;
+    private ChatsViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,68 +43,53 @@ public class ChatsActivity extends AppCompatActivity implements UsersListAdapter
         binding = ActivityChatsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        userList = new ArrayList<>();
+//        //view model:
+//        viewModel = new ViewModelProvider(this).get(ChatsViewModel.class);
+//        viewModel.getChats().observe(this, new Observer<Chat>() {
+//            @Override
+//            public void onChanged(Chat chats) {
+//
+//            }
+//        });
 
+
+        // current intent:
         Intent intent = getIntent();
         String username = intent.getExtras().getString("username");
         binding.username.setText(username);
         connectedUser = username;
         //todo: add profile picture from user by api
 
+        // adpter for recycle list:
+        userList = new ArrayList<>();
         RecyclerView usersList = binding.userChatsList;
         usersListAdapter = new UsersListAdapter(this, connectedUser, this);
         usersList.setAdapter(usersListAdapter);
         usersList.setLayoutManager(new LinearLayoutManager(this));
-        //debug:
-        User tomer = new User("tomer");
-        User hilla = new User("hilla");
-        usersListAdapter.addChat(tomer);
-        userList.add(tomer);
-        usersListAdapter.addChat(hilla);
-        userList.add(hilla);
 
         // set listener to the add chat floating button
         binding.addChat.setOnClickListener(this::addChat);
     }
-    public void addThisUser(String username){
+
+    public void addThisUser(String username, String needToAdd){
         AppLocalDB db = AppLocalDB.createAppDBInstance(getApplicationContext());
         User user = db.userDao().getByUsername(username);
         if (user != null) {
            userList.add(user);
            usersListAdapter.addChat(user);
        }
-    }
-
-    private void goToChat(View v){
-        //todo: will be deleted- temporary for checking the database
-        AppLocalDB db = AppLocalDB.createAppDBInstance(getApplicationContext());
-        if(db.chatDao().getChatByUsers("rotem", "shir") == null) {
-            db.chatDao().Insert(new Chat("rotem", "shir"));
+        if (needToAdd.equals("true")) {
+            db.chatDao().Insert(new Chat(connectedUser, username));
         }
-        Chat c = db.chatDao().getChatByUsers("rotem", "shir");
-        //todo: will be changed
-        Intent intent = new Intent(getApplicationContext(), ChatMessagesActivity.class);
-        intent.putExtra("username", "rotem");
-        intent.putExtra("idChat", c.getIdChat());
-        startActivity(intent);
     }
 
     private void addChat(View v){
         Intent intent = new Intent(getApplicationContext(), AddChatsActivity.class);
+        intent.putExtra("connected", connectedUser);
         someActivityResultLauncher.launch(intent);
     }
 
-//    @Override
-//    public void onResponseValidation(boolean username, boolean password) { }
-//
-//    @Override
-//    public void onResponseGetUser(User user) {
-//       if (user != null) {
-//           userList.add(user);
-//           usersListAdapter.addChat(user);
-//       }
-//    }
-
+    // get result from add chat activity
     ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -110,12 +99,14 @@ public class ChatsActivity extends AppCompatActivity implements UsersListAdapter
                         // There are no request codes
                         Intent data = result.getData();
                         String user = data.getExtras().getString("username");
-                        addThisUser(user);
+                        String needToAdd = data.getExtras().getString("add");
+                        addThisUser(user, needToAdd);
                         //apiManager.getUser(user,this);
                     }
                 }
             });
 
+    // when click on a specific chat - enter to chat messages
     @Override
     public void onUserClick(int position) {
         AppLocalDB db = AppLocalDB.createAppDBInstance(getApplicationContext());
