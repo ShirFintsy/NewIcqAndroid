@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -15,8 +17,10 @@ import android.view.View;
 import com.example.newicqandroid.ChatsActivity;
 import com.example.newicqandroid.IOnResponse;
 import com.example.newicqandroid.LogInActivity;
+import com.example.newicqandroid.Utils;
 import com.example.newicqandroid.databinding.ActivityRegisterBinding;
 import com.example.newicqandroid.entities.User;
+import com.example.newicqandroid.repositories.UserRepository;
 
 import java.io.IOException;
 
@@ -26,6 +30,10 @@ public class RegisterActivity extends AppCompatActivity implements IOnResponse {
     public ActivityRegisterBinding binding;
     private RegisterValidations validator;
     private static boolean error = false; //indicates if some field was invalid
+    private UserRepository userRepository;
+    private User registeredUser = null;
+    private static boolean uploadedImg = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +43,7 @@ public class RegisterActivity extends AppCompatActivity implements IOnResponse {
 
         validator = new RegisterValidations(binding);
 
+        userRepository = new UserRepository(getApplicationContext());
     }
 
     private void setListeners(){
@@ -50,7 +59,25 @@ public class RegisterActivity extends AppCompatActivity implements IOnResponse {
         String pass = binding.passwordInput.getText().toString().trim();
         String confirmPass = binding.confirmPasswordInput.getText().toString().trim();
 
-      if(displayName.isEmpty()){
+        String strImg;
+        if(!uploadedImg){
+            strImg = "defult_picture.jpg";
+        }else {
+            Drawable image = binding.imageButton.getDrawable();
+            Bitmap img = Utils.drawableToBitmap(image);
+            strImg = Utils.encodeImg(img);
+        }
+        registeredUser = new User(username, displayName, pass, strImg);
+
+        if(username.isEmpty()) {
+            binding.userNameInput.setError("Please fill out this field");
+            binding.userNameInput.requestFocus();
+            error = true;
+        }else {
+            validator.checkIsExists(username, this);
+            //error = true;
+        }
+        if(displayName.isEmpty()){
             binding.displayNameInput.setError("Please fill out this field");
             binding.displayNameInput.requestFocus();
             error = true;
@@ -67,13 +94,6 @@ public class RegisterActivity extends AppCompatActivity implements IOnResponse {
             binding.confirmPasswordInput.setError("Not matches password field");
             binding.confirmPasswordInput.requestFocus();
             error = true;
-        } if(username.isEmpty()) {
-            binding.userNameInput.setError("Please fill out this field");
-            binding.userNameInput.requestFocus();
-            error = true;
-        }else {
-            validator.checkIsExists(username, this);
-            //error = true;
         }
 
         //if no error in validation happened
@@ -83,11 +103,12 @@ public class RegisterActivity extends AppCompatActivity implements IOnResponse {
     }
 
     private void endRegistration(){
-        //todo: send the data to the webApi
+        //send the data to the webApi and save in room
+        userRepository.addUser(registeredUser);
 
         //move to the chats activity
-        Intent intent = new Intent(getApplicationContext(), LogInActivity.class); // todo: for now- until chat activity will word
-        intent.putExtra("username", binding.userNameInput.getText().toString());
+        Intent intent = new Intent(getApplicationContext(), LogInActivity.class);
+        //intent.putExtra("username", binding.userNameInput.getText().toString());
         startActivity(intent);
     }
 
@@ -115,8 +136,9 @@ public class RegisterActivity extends AppCompatActivity implements IOnResponse {
                         e.printStackTrace();
                     }
 
-                    Bitmap circleBitmap =  RegisterHelper.getCircleBitmap(imgBitmap);
+                    Bitmap circleBitmap =  Utils.getCircleBitmap(imgBitmap);
                     binding.imageButton.setImageBitmap(circleBitmap);
+                    uploadedImg = true;
                 }
             }
         });
@@ -135,10 +157,11 @@ public class RegisterActivity extends AppCompatActivity implements IOnResponse {
             });
 
         }else if(!error){
-            Intent intent = new Intent(getApplicationContext(), ChatsActivity.class); // todo: for now- until chat activity will word
-            intent.putExtra("username", binding.userNameInput.getText().toString());
-            startActivity(intent);
-            //endRegistration();
+            // todo: for now- until chat activity will word
+            //Intent intent = new Intent(getApplicationContext(), ChatsActivity.class);
+            //intent.putExtra("username", binding.userNameInput.getText().toString());
+            //startActivity(intent);
+            endRegistration();
         }
     }
 

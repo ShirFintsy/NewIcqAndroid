@@ -48,7 +48,7 @@ public class LogInActivity extends AppCompatActivity implements IOnResponse {
             validationFlags[0] = false;
             runOnUiThread(new Runnable() {
                 public void run() {
-                    binding.userNameInput.setError("Username already exists");
+                    binding.userNameInput.setError("Username not exists");
                     binding.userNameInput.requestFocus();
                 }
             });

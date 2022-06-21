@@ -22,10 +22,10 @@ public interface ChatDao {
             "OR (idUser1 = :user2 AND idUser2 = :user1)")
     Chat getChatByUsers(String user1, String user2);
 
-    @Transaction
+    /*@Transaction
     @Query("SELECT * FROM chats WHERE (idUser1 = :user1 AND idUser2 = :user2) " +
             "OR (idUser1 = :user2 AND idUser2 = :user1)")
-    List<Chat> getChatsByUsers(String username);
+    List<Chat> getChatsByUsers(String username);*/
 
     @Transaction
     @Insert

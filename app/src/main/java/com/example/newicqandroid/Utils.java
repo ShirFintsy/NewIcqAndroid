@@ -1,4 +1,4 @@
-package com.example.newicqandroid.registerActivity;
+package com.example.newicqandroid;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -7,12 +7,13 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.util.Base64;
 
 import java.io.ByteArrayOutputStream;
 
 //This class contains methods that helps the registerActivity logic
-public class RegisterHelper {
+public class Utils {
 
     /*
     make picture rounded
@@ -40,6 +41,16 @@ public class RegisterHelper {
         Bitmap bmp = Bitmap.createScaledBitmap(output, 272, 352, false);
         return bmp;
         //return output;
+    }
+
+    static public Bitmap drawableToBitmap(Drawable img){
+        Bitmap bitmap = null;
+
+        if(!(img.getIntrinsicWidth() <= 0 || img.getIntrinsicHeight() <= 0)) {
+          bitmap = Bitmap.createBitmap(img.getIntrinsicWidth(),
+                  img.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        }
+        return bitmap;
     }
 
     static public String encodeImg(Bitmap bitmap)

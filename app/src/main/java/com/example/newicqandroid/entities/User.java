@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -27,13 +29,21 @@ public class User {
 //    private String Server;
     @NonNull
     @PrimaryKey(autoGenerate = false)
+    //@SerializedName("id")
     private String Id;
+    //@SerializedName("name")
     private String Name;
+    //@SerializedName("password")
     private String Password;
+    //@SerializedName("image")
     private String Image;
+    //@SerializedName("server")
     private String Server;
+    //@SerializedName("last")
     private String last;
+    //@SerializedName("lastdate")
     private String lastdate;
+
 
     public User(String Id, String name, String server){
         this.Id = Id;
@@ -41,6 +51,16 @@ public class User {
         this.Server = server;
         this.Password = null;
         this.Image = null;
+        last = null;
+        lastdate = null;
+    }
+    public User(String id, String name, String password, String image){
+        this.Id = id;
+        this.Name = name;
+        this.Password = password;
+        this.Image = image;
+        //todo: from settings get server url
+        Server = "localhost:5067";
         last = null;
         lastdate = null;
     }
