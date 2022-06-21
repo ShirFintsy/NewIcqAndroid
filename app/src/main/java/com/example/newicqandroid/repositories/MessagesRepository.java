@@ -38,6 +38,11 @@ public class MessagesRepository {
         //todo: in the future add update to api
     }
 
+    /*
+    public void insertMsg(Message message){
+        msgsListData.add(message);
+    }*/
+
 
     class MessagesListData extends MutableLiveData<List<Message>>{
         public MessagesListData(){

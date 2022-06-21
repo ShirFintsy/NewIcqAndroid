@@ -10,7 +10,14 @@ public class Chat {
     private String idUser1;
     private String idUser2;
 
+    public Chat(){}
+
     public Chat(String idUser1, String idUser2) {
+        this.idUser1 = idUser1;
+        this.idUser2 = idUser2;
+    }
+    public Chat(int idChat, String idUser1, String idUser2) {
+        this.idChat = idChat;
         this.idUser1 = idUser1;
         this.idUser2 = idUser2;
     }
