@@ -4,6 +4,7 @@ package com.example.newicqandroid.api;
 import android.util.Pair;
 
 import com.example.newicqandroid.entities.Chat;
+import com.example.newicqandroid.entities.InvitaionApi;
 import com.example.newicqandroid.entities.Message;
 import com.example.newicqandroid.entities.User;
 
@@ -24,7 +25,7 @@ public interface IApiWebService {
     Call<User> addUser(@Body User user);
 
     @GET("setup/{username}")
-    Call<User> signIn(@Path("username") String username);
+    Call<Void> signIn(@Path("username") String username);
 
     @GET("contacts")
     Call<List<User>> getContacts();
@@ -34,5 +35,8 @@ public interface IApiWebService {
 
     @GET("chats/{chatId}")
     Call<List<Message>> getMsgs(@Path("chatId") int chatId);
+
+    @POST("invitations")
+    Call<Void> invitations(@Body InvitaionApi invitations);
 
 }

@@ -20,6 +20,7 @@ import com.example.newicqandroid.adapters.UsersListAdapter;
 import com.example.newicqandroid.api.ApiManager;
 import com.example.newicqandroid.databinding.ActivityChatsBinding;
 import com.example.newicqandroid.entities.Chat;
+import com.example.newicqandroid.entities.InvitaionApi;
 import com.example.newicqandroid.repositories.ChatRepository;
 import com.example.newicqandroid.repositories.UserRepository;
 
@@ -80,6 +81,7 @@ public class ChatsActivity extends AppCompatActivity implements UsersListAdapter
         usersListAdapter.addChat(current);
 
         //todo: add chat in api
+        apiManager.addChat(chat);
     }
 
     private void addChat(View v){

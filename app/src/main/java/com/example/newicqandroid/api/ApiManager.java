@@ -9,6 +9,7 @@ import androidx.annotation.RequiresApi;
 
 import com.example.newicqandroid.IOnResponse;
 import com.example.newicqandroid.entities.Chat;
+import com.example.newicqandroid.entities.InvitaionApi;
 import com.example.newicqandroid.entities.Message;
 import com.example.newicqandroid.entities.User;
 import com.example.newicqandroid.repositories.ChatRepository;
@@ -99,31 +100,27 @@ public class ApiManager {
           });
      }
 
+     public void addChat(Chat chat){
+          InvitaionApi invitation = new InvitaionApi(chat.getIdUser1(), chat.getIdUser2(), "android");
+          Call<Void> call = apiWebService.invitations(invitation);
+          call.enqueue(new Callback<Void>() {
+               @RequiresApi(api = Build.VERSION_CODES.N)
+               @Override
+               public void onResponse(Call<Void> call, Response<Void> response) {
+
+               }
+
+               @Override
+               public void onFailure(Call<Void> call, Throwable t) {
+
+               }
+          });
+     }
+
 
      public void getData(String username, Context context){
           Call<List<User>> call1 = apiWebService.getContacts();
          // Call<List<Pair<Integer,String>>> call2 = apiWebService.getUserChats(username);
-
-/*
-          Callback<List<Message>> callbackMsgs =  new Callback<List<Message>>() {
-               @RequiresApi(api = Build.VERSION_CODES.N)
-               @Override
-               public void onResponse(Call<List<Message>> call, Response<List<Message>> response) {
-                    //add to users repository
-                    MessagesRepository msgRepo = new MessagesRepository(context, -1);
-                    List<Message> msgs = response.body();
-                    if(msgs!=null) {
-                         for (Message msg : msgs) {
-                              msgRepo.insertMsg(msg);
-                         }
-                    }
-               }
-
-               @Override
-               public void onFailure(Call<List<Message>> call, Throwable t) {
-
-               }
-          };*/
 
           call1.enqueue(new Callback<List<User>>() {
                @RequiresApi(api = Build.VERSION_CODES.N)
@@ -199,19 +196,19 @@ public class ApiManager {
 
 
      public void signIn(String username, Context context){
-          Call<User> call = apiWebService.signIn(username);
+          Call<Void> call = apiWebService.signIn(username);
 
-          call.enqueue(new Callback<User>() {
+          call.enqueue(new Callback<Void>() {
                @RequiresApi(api = Build.VERSION_CODES.N)
                @Override
-               public void onResponse(Call<User> call, Response<User> response) {
+               public void onResponse(Call<Void> call, Response<Void> response) {
                    // Log.i("hiiii","success");
 
                     getData(username, context);
                }
 
                @Override
-               public void onFailure(Call<User> call, Throwable t) {
+               public void onFailure(Call<Void> call, Throwable t) {
 
                }
           });
