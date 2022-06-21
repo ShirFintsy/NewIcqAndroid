@@ -14,7 +14,7 @@ import com.example.newicqandroid.entities.Message;
 import com.example.newicqandroid.entities.User;
 
 
-@Database(entities = {User.class, Message.class, Chat.class}, version = 2)
+@Database(entities = {User.class, Message.class, Chat.class}, version = 3)
 public abstract class AppLocalDB extends RoomDatabase {
     private static AppLocalDB appDB = null;
 
@@ -25,7 +25,9 @@ public abstract class AppLocalDB extends RoomDatabase {
     public static AppLocalDB createAppDBInstance(Context context) {
         if(appDB == null){
             appDB = Room.databaseBuilder(context.getApplicationContext(),
-                    AppLocalDB.class, "newIcqDB").allowMainThreadQueries().build();
+                    AppLocalDB.class, "newIcqDB")
+                    .fallbackToDestructiveMigration()
+                    .allowMainThreadQueries().build();
         }
 
         return appDB;

@@ -42,7 +42,7 @@ public class MessagesRepository {
     class MessagesListData extends MutableLiveData<List<Message>>{
         public MessagesListData(){
             super();
-
+            setValue(new LinkedList<>());
             //todo: will be deleted!
             /*
             User shir =  new User("shir");

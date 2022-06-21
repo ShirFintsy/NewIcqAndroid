@@ -40,9 +40,13 @@ public class AddChatsActivity extends AppCompatActivity implements IOnResponse{
         Intent toIntent = new Intent(getApplicationContext(), ChatsActivity.class);
 
         if (user == null || user.getId().equals(connectedUser)) {
-            binding.addChatInput.setError("Not valid username");
-            binding.addChatInput.requestFocus();
-        } else {
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    binding.addChatInput.setError("User does not exists");
+                    binding.addChatInput.requestFocus();
+                }
+            });
+        }else {
             AppLocalDB db = AppLocalDB.createAppDBInstance(getApplicationContext());
             if(db.userDao().getByUsername(user.getId()) == null) { // check if user is not already in db
                 db.userDao().Insert(user); // insert user into db
@@ -55,6 +59,7 @@ public class AddChatsActivity extends AppCompatActivity implements IOnResponse{
             } else {
                 toIntent.putExtra("add", "true"); // notify the chats activity to add this chat to local db
             }
+
 
             toIntent.putExtra("username", user.getId());
             setResult(RESULT_OK, toIntent);
