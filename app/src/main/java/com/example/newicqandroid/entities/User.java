@@ -1,8 +1,20 @@
 package com.example.newicqandroid.entities;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.util.Base64;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 @Entity(tableName = "users")
 public class User {
@@ -93,5 +105,32 @@ public class User {
 
     public void setLastdate(String lastdate) {
         this.lastdate = lastdate;
+    }
+
+    public Bitmap geyCodedImage() {
+        try {
+            URL url = new URL(getImage());
+            Bitmap image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+            return image;
+        } catch(IOException e) {
+            System.out.println(e);
+            return null;
+        }
+    }
+
+    public Drawable loadImageFromNetwork() {
+        Drawable drawable = null;
+        try {
+            drawable = Drawable.createFromStream(
+                    new URL(getImage()).openStream(), "image.jpg");
+        } catch (IOException e) {
+            Log.d("test", e.getMessage());
+        }
+        if (drawable == null) {
+            Log.d("test", "null drawable");
+        } else {
+            Log.d("test", "not null drawable");
+        }
+        return drawable;
     }
 }

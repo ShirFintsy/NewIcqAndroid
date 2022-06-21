@@ -22,7 +22,7 @@ public abstract class AppLocalDB extends RoomDatabase {
     public abstract MessageDao messageDao();
     public abstract ChatDao chatDao();
 
-    public static AppLocalDB createAppDBInstance(Context context){
+    public static AppLocalDB createAppDBInstance(Context context) {
         if(appDB == null){
             appDB = Room.databaseBuilder(context.getApplicationContext(),
                     AppLocalDB.class, "newIcqDB").allowMainThreadQueries().build();

@@ -44,15 +44,17 @@ public class LogInActivity extends AppCompatActivity implements IOnResponse {
     @Override
     public void onResponseValidation(boolean username, boolean password) {
         if (!username) { // user is not exists
-            binding.userNameInput.setError("User does not exists");
             binding.userNameInput.requestFocus();
+            binding.userNameInput.setError("User does not exists");
+
             validationFlags[0] = false;
         } else
             validationFlags[0] = true;
         if (!password) { // not valid password
-            //binding.passwordInput.setError("Wrong password");
-            System.out.println("error");
             binding.passwordInput.requestFocus();
+            binding.passwordInput.setError("Wrong password");
+            System.out.println("error");
+
             validationFlags[1] = false;
         }
         else
