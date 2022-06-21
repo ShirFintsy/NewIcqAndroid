@@ -79,8 +79,6 @@ public class ChatsActivity extends AppCompatActivity implements UsersListAdapter
         Chat current = chatRepository.insertChat(chat);
         userList.add(current);
         usersListAdapter.addChat(current);
-
-        //todo: add chat in api
         apiManager.addChat(chat);
     }
 
@@ -94,10 +92,6 @@ public class ChatsActivity extends AppCompatActivity implements UsersListAdapter
         List<Chat> userChats = chatRepository.getChatsByUser(connectedUser);
         userList = userChats;
         usersListAdapter.setChats(userChats);
-        /*for(Chat c: userChats) {
-            userList.add(c);
-            usersListAdapter.addChat(c);
-        }*/
     }
 
     // get result from add chat activity
