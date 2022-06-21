@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 
+import com.example.newicqandroid.ChatsActivity;
 import com.example.newicqandroid.IOnResponse;
 import com.example.newicqandroid.LogInActivity;
 import com.example.newicqandroid.databinding.ActivityRegisterBinding;
@@ -134,7 +135,7 @@ public class RegisterActivity extends AppCompatActivity implements IOnResponse {
             });
 
         }else if(!error){
-            Intent intent = new Intent(getApplicationContext(), LogInActivity.class); // todo: for now- until chat activity will word
+            Intent intent = new Intent(getApplicationContext(), ChatsActivity.class); // todo: for now- until chat activity will word
             intent.putExtra("username", binding.userNameInput.getText().toString());
             startActivity(intent);
             //endRegistration();

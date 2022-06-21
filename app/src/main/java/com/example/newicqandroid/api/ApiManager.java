@@ -46,7 +46,8 @@ public class ApiManager {
                               passwordResult = true;
                          }
                     }
-                    func.onResponseValidation(usernameResult, passwordResult); // send true if user is exists, false otherwise
+                    func.
+                            onResponseValidation(usernameResult, passwordResult); // send true if user is exists, false otherwise
                }
 
                @Override
