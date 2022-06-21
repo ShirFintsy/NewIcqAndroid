@@ -107,30 +107,26 @@ public class User {
         this.lastdate = lastdate;
     }
 
-    public Bitmap geyCodedImage() {
-        try {
-            URL url = new URL(getImage());
-            Bitmap image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-            return image;
-        } catch(IOException e) {
-            System.out.println(e);
+    public Bitmap getDrawableImage() throws java.net.MalformedURLException, java.io.IOException {
+        String url = getImage();
+        if (url == null)
             return null;
-        }
+        HttpURLConnection connection = (HttpURLConnection)new URL(url) .openConnection();
+        connection.setRequestProperty("User-agent","Mozilla/4.0");
+
+        connection.connect();
+        InputStream input = connection.getInputStream();
+
+        return BitmapFactory.decodeStream(input);
     }
 
-    public Drawable loadImageFromNetwork() {
-        Drawable drawable = null;
-        try {
-            drawable = Drawable.createFromStream(
-                    new URL(getImage()).openStream(), "image.jpg");
-        } catch (IOException e) {
-            Log.d("test", e.getMessage());
-        }
-        if (drawable == null) {
-            Log.d("test", "null drawable");
-        } else {
-            Log.d("test", "not null drawable");
-        }
-        return drawable;
+    public Bitmap decodeImg(){
+        String imgStr = getImage();
+        if (imgStr == null)
+            return null;
+        byte[] decodedString = Base64.decode(imgStr, Base64.DEFAULT);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+        return bitmap;
     }
 }
