@@ -1,6 +1,8 @@
 package com.example.newicqandroid.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,18 +13,26 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.newicqandroid.AppLocalDB;
 import com.example.newicqandroid.R;
+import com.example.newicqandroid.dao.ChatDao;
+import com.example.newicqandroid.entities.Chat;
 import com.example.newicqandroid.entities.User;
+import com.example.newicqandroid.repositories.ChatRepository;
+import com.example.newicqandroid.repositories.UserRepository;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.UsersViewHolder>{
 
     private final LayoutInflater inflater;
-    private List<User> chats;
+    private List<Chat> chats;
     private final String connectedUser;
     private onUserListener listener;
+    private ChatRepository chatRepository;
+    private UserRepository userRepository;
 
     static class UsersViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView user;
@@ -52,16 +62,18 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.User
         this.connectedUser = connectedUser;
         this.listener = userListener;
         this.chats = new ArrayList<>();
+        this.chatRepository = new ChatRepository(context);
+        this.userRepository = new UserRepository(context);
     }
 
-    public void addChat(User user){
-        if(!chats.contains(user)){
-            chats.add(user);
+    public void addChat(Chat chat){
+        if(!chats.contains(chat)){
+            chats.add(chat);
         }
         notifyDataSetChanged(); // not working when adding from outside
     }
 
-    public List<User> getChats(){
+    public List<Chat> getChats(){
         return chats;
     }
 
@@ -75,11 +87,13 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.User
     @Override
     public void onBindViewHolder(@NonNull UsersViewHolder holder, int position) {
         if(chats != null) {
-            User currentUser = chats.get(position); // get user info from list by position
-            holder.user.setText(currentUser.getId());
-            holder.lastMsg.setText(currentUser.getLast());
-            holder.date.setText(currentUser.getLastdate());
+            Chat chat = chats.get(position);
+            String current = chatRepository.getOtherUser(connectedUser, chat.getIdChat());
+            holder.user.setText(userRepository.getDisplayName(current));
+            holder.lastMsg.setText(chatRepository.getLastMsgByChadId(chat.getIdChat()).getContent());
+            holder.date.setText(chatRepository.getLastMsgByChadId(chat.getIdChat()).getCreated());
             //holder.profilePicture.setImageBitmap(currentUser.decodeImg());
+
         }
     }
 

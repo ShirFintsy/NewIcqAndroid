@@ -23,6 +23,7 @@ import com.example.newicqandroid.api.ApiManager;
 import com.example.newicqandroid.databinding.ActivityChatsBinding;
 import com.example.newicqandroid.entities.User;
 import com.example.newicqandroid.entities.Chat;
+import com.example.newicqandroid.repositories.ChatRepository;
 import com.example.newicqandroid.viewModels.ChatsViewModel;
 
 import java.util.ArrayList;
@@ -34,14 +35,16 @@ public class ChatsActivity extends AppCompatActivity implements UsersListAdapter
     private String connectedUser;
     private ApiManager apiManager = new ApiManager();
     private UsersListAdapter usersListAdapter;
-    private List<User> userList;
+    private List<Chat> userList;
     private ChatsViewModel viewModel;
+    private ChatRepository chatRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityChatsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        chatRepository = new ChatRepository(getApplicationContext());
 
 //        //view model:
 //        viewModel = new ViewModelProvider(this).get(ChatsViewModel.class);
@@ -60,33 +63,37 @@ public class ChatsActivity extends AppCompatActivity implements UsersListAdapter
         connectedUser = username;
         //todo: add profile picture from user by api
 
-        // adpter for recycle list:
+        // adapter for recycle list:
         userList = new ArrayList<>();
         RecyclerView usersList = binding.userChatsList;
         usersListAdapter = new UsersListAdapter(this, connectedUser, this);
         usersList.setAdapter(usersListAdapter);
         usersList.setLayoutManager(new LinearLayoutManager(this));
+        setUpChats();
 
         // set listener to the add chat floating button
         binding.addChat.setOnClickListener(this::addChat);
     }
 
     public void addThisUser(String username){
-        AppLocalDB db = AppLocalDB.createAppDBInstance(getApplicationContext());
-        User user = db.userDao().getByUsername(username);
-        if (user != null) {
-           userList.add(user);
-           usersListAdapter.addChat(user);
-        }
-
-        db.chatDao().Insert(new Chat(connectedUser, username));
-
+        Chat chat = new Chat(connectedUser, username);
+        Chat current = chatRepository.insertChat(chat);
+        userList.add(current);
+        usersListAdapter.addChat(current);
     }
 
     private void addChat(View v){
         Intent intent = new Intent(getApplicationContext(), AddChatsActivity.class);
         intent.putExtra("connected", connectedUser);
         someActivityResultLauncher.launch(intent);
+    }
+
+    private void setUpChats() {
+        List<Chat> userChats = chatRepository.getChatsByUser(connectedUser);
+        for(Chat c: userChats) {
+            userList.add(c);
+            usersListAdapter.addChat(c);
+        }
     }
 
     // get result from add chat activity
@@ -99,9 +106,7 @@ public class ChatsActivity extends AppCompatActivity implements UsersListAdapter
                         // There are no request codes
                         Intent data = result.getData();
                         String user = data.getExtras().getString("username");
-
                         addThisUser(user);
-                        //apiManager.getUser(user,this);
                     }
                 }
             });
@@ -109,20 +114,10 @@ public class ChatsActivity extends AppCompatActivity implements UsersListAdapter
     // when click on a specific chat - enter to chat messages
     @Override
     public void onUserClick(int position) {
-        AppLocalDB db = AppLocalDB.createAppDBInstance(getApplicationContext());
-        User user = userList.get(position);
-        String otherUser = user.getId();
-
-
-        if(db.chatDao().getChatByUsers(connectedUser, otherUser) == null) {
-            db.chatDao().Insert(new Chat(connectedUser, otherUser));
-        }
-
-        Chat c = db.chatDao().getChatByUsers(connectedUser, otherUser);
-
+        Chat chat = userList.get(position);
         Intent intent = new Intent(getApplicationContext(), ChatMessagesActivity.class);
         intent.putExtra("username", connectedUser);
-        intent.putExtra("idChat", c.getIdChat());
+        intent.putExtra("idChat", chat.getIdChat());
         startActivity(intent);
     }
 }
