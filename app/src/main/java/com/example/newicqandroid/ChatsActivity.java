@@ -71,16 +71,16 @@ public class ChatsActivity extends AppCompatActivity implements UsersListAdapter
         binding.addChat.setOnClickListener(this::addChat);
     }
 
-    public void addThisUser(String username, String needToAdd){
+    public void addThisUser(String username){
         AppLocalDB db = AppLocalDB.createAppDBInstance(getApplicationContext());
         User user = db.userDao().getByUsername(username);
         if (user != null) {
            userList.add(user);
            usersListAdapter.addChat(user);
-       }
-        if (needToAdd.equals("true")) {
-            db.chatDao().Insert(new Chat(connectedUser, username));
         }
+
+        db.chatDao().Insert(new Chat(connectedUser, username));
+
     }
 
     private void addChat(View v){
@@ -99,8 +99,8 @@ public class ChatsActivity extends AppCompatActivity implements UsersListAdapter
                         // There are no request codes
                         Intent data = result.getData();
                         String user = data.getExtras().getString("username");
-                        String needToAdd = data.getExtras().getString("add");
-                        addThisUser(user, needToAdd);
+
+                        addThisUser(user);
                         //apiManager.getUser(user,this);
                     }
                 }
