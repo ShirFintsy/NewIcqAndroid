@@ -50,7 +50,7 @@ public class ChatMessagesActivity extends AppCompatActivity {
         msgsViewModel.get().observe(this, msgsAdapter::setMsgs);
 
         binding.sendBtn.setOnClickListener(this::onSendMsg);
-        binding.displayName.setText(msgsViewModel.getDisplayName(connectedUser));
+        binding.displayName.setText(msgsViewModel.getDisplayName(otherUser));
     }
 
     public void onSendMsg(View v){
