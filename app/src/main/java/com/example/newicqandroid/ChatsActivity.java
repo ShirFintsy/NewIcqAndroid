@@ -20,6 +20,7 @@ import com.example.newicqandroid.adapters.UsersListAdapter;
 import com.example.newicqandroid.api.ApiManager;
 import com.example.newicqandroid.databinding.ActivityChatsBinding;
 import com.example.newicqandroid.entities.Chat;
+import com.example.newicqandroid.entities.InvitaionApi;
 import com.example.newicqandroid.repositories.ChatRepository;
 import com.example.newicqandroid.repositories.UserRepository;
 
@@ -78,8 +79,7 @@ public class ChatsActivity extends AppCompatActivity implements UsersListAdapter
         Chat current = chatRepository.insertChat(chat);
         userList.add(current);
         usersListAdapter.addChat(current);
-
-        //todo: add chat in api
+        apiManager.addChat(chat);
     }
 
     private void addChat(View v){
@@ -92,10 +92,6 @@ public class ChatsActivity extends AppCompatActivity implements UsersListAdapter
         List<Chat> userChats = chatRepository.getChatsByUser(connectedUser);
         userList = userChats;
         usersListAdapter.setChats(userChats);
-        /*for(Chat c: userChats) {
-            userList.add(c);
-            usersListAdapter.addChat(c);
-        }*/
     }
 
     // get result from add chat activity

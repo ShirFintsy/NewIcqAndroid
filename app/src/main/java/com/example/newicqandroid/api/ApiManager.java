@@ -8,6 +8,7 @@ import androidx.annotation.RequiresApi;
 
 import com.example.newicqandroid.IOnResponse;
 import com.example.newicqandroid.entities.Chat;
+import com.example.newicqandroid.entities.InvitaionApi;
 import com.example.newicqandroid.entities.Message;
 import com.example.newicqandroid.entities.User;
 import com.example.newicqandroid.repositories.ChatRepository;
@@ -99,6 +100,24 @@ public class ApiManager {
           });
      }
 
+     public void addChat(Chat chat){
+          InvitaionApi invitation = new InvitaionApi(chat.getIdUser1(), chat.getIdUser2(), "android");
+          Call<Void> call = apiWebService.invitations(invitation);
+          call.enqueue(new Callback<Void>() {
+               @RequiresApi(api = Build.VERSION_CODES.N)
+               @Override
+               public void onResponse(Call<Void> call, Response<Void> response) {
+
+               }
+
+               @Override
+               public void onFailure(Call<Void> call, Throwable t) {
+
+               }
+          });
+     }
+
+
 
      private void getChats(String username, Context context){
           Call<List<ApiTupleResponse>> call = apiWebService.getUserChats(username);
@@ -107,6 +126,7 @@ public class ApiManager {
                @Override
                public void onResponse(Call<List<ApiTupleResponse>> call,
                                       Response<List<ApiTupleResponse>> response) {
+
                     //add to chats repository
                     ChatRepository chatRepository = new ChatRepository(context);
                     List<ApiTupleResponse> chats = response.body();
