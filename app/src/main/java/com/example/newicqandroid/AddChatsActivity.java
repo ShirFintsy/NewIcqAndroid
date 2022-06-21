@@ -32,8 +32,12 @@ public class AddChatsActivity extends AppCompatActivity implements IOnResponse{
     @Override
     public void onResponseGetUser(User user) {
         if (user == null) {
-            binding.addChatInput.setError("User does not exists");
-            binding.addChatInput.requestFocus();
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    binding.addChatInput.setError("User does not exists");
+                    binding.addChatInput.requestFocus();
+                }
+            });
         } else {
             AppLocalDB db = AppLocalDB.createAppDBInstance(getApplicationContext());
             if(db.userDao().getByUsername(user.getId()) == null) { // check if user is already in db
