@@ -44,20 +44,11 @@ public class ChatsActivity extends AppCompatActivity implements UsersListAdapter
         setContentView(binding.getRoot());
         chatRepository = new ChatRepository(getApplicationContext());
         userRepository = new UserRepository(getApplicationContext());
-//        //view model:
-//        viewModel = new ViewModelProvider(this).get(ChatsViewModel.class);
-//        viewModel.getChats().observe(this, new Observer<Chat>() {
-//            @Override
-//            public void onChanged(Chat chats) {
-//
-//            }
-//        });
-
 
         // current intent:
         Intent intent = getIntent();
         String username = intent.getExtras().getString("username");
-        binding.username.setText(username);
+        binding.username.setText(userRepository.getDisplayName(username));
         connectedUser = username;
         //todo: add profile picture from user by api
         //binding.profilePicture.setImageBitmap(userRepository.getProfilePic(connectedUser));

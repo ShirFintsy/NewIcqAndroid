@@ -167,4 +167,7 @@ public class RegisterActivity extends AppCompatActivity implements IOnResponse {
 
     @Override
     public void onResponseGetUser(User user) { }
+
+    @Override
+    public void onResponseSignIn() { }
 }
