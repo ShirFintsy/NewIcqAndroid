@@ -51,6 +51,7 @@ public class ChatMessagesActivity extends AppCompatActivity {
 
         binding.sendBtn.setOnClickListener(this::onSendMsg);
         binding.displayName.setText(msgsViewModel.getDisplayName(otherUser));
+        binding.profilePic.setImageBitmap(msgsViewModel.getProfilePic(otherUser));
     }
 
     public void onSendMsg(View v){

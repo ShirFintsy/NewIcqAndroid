@@ -1,6 +1,7 @@
 package com.example.newicqandroid.viewModels;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
@@ -50,5 +51,9 @@ public class MessagesViewModel extends ViewModel {
 
     public String getDisplayName(String username){
         return userRepository.getDisplayName(username);
+    }
+
+    public Bitmap getProfilePic(String username){
+        return userRepository.getProfilePic(username);
     }
 }

@@ -46,8 +46,7 @@ public class ApiManager {
                               passwordResult = true;
                          }
                     }
-                    func.
-                            onResponseValidation(usernameResult, passwordResult); // send true if user is exists, false otherwise
+                    func.onResponseValidation(usernameResult, passwordResult); // send true if user is exists, false otherwise
                }
 
                @Override
@@ -66,6 +65,23 @@ public class ApiManager {
                public void onResponse(Call<User> call, Response<User> response) {
                     User user = response.body();
                     func.onResponseGetUser(user);
+               }
+
+               @Override
+               public void onFailure(Call<User> call, Throwable t) {
+
+               }
+          });
+     }
+
+     public void addUser(User user){
+
+          Call<User> call = apiWebService.addUser(user);
+          call.enqueue(new Callback<User>() {
+               @RequiresApi(api = Build.VERSION_CODES.N)
+               @Override
+               public void onResponse(Call<User> call, Response<User> response) {
+
                }
 
                @Override
