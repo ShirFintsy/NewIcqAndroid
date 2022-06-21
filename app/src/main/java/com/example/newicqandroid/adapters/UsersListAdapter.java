@@ -72,6 +72,10 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.User
         }
         notifyDataSetChanged(); // not working when adding from outside
     }
+    public void setChats(List<Chat> chats){
+        this.chats = chats;
+        notifyDataSetChanged();
+    }
 
     public List<Chat> getChats(){
         return chats;

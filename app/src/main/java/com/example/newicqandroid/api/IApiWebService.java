@@ -1,8 +1,14 @@
 package com.example.newicqandroid.api;
 
 
+import android.util.Pair;
+
+import com.example.newicqandroid.entities.Chat;
+import com.example.newicqandroid.entities.Message;
 import com.example.newicqandroid.entities.User;
 
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -16,5 +22,17 @@ public interface IApiWebService {
 
     @POST("setup/register")
     Call<User> addUser(@Body User user);
+
+    @GET("setup/{username}")
+    Call<User> signIn(@Path("username") String username);
+
+    @GET("contacts")
+    Call<List<User>> getContacts();
+
+    @GET("chats/user/{username}")
+    Call<List<Pair<Integer,String>>> getUserChats(@Path("username") String username);
+
+    @GET("chats/{chatId}")
+    Call<List<Message>> getMsgs(@Path("chatId") int chatId);
 
 }

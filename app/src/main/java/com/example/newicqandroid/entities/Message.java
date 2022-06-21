@@ -22,6 +22,11 @@ public class Message {
 
     public Message(){}
 
+    public Message(String content, String created, boolean sent){
+        this.content = content;
+        this.created = created;
+        this.sent = sent;
+    }
 
     public Message(String content, String from, String to, int idChat){
         this.idChat = idChat;

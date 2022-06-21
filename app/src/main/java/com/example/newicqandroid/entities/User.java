@@ -60,7 +60,7 @@ public class User {
         this.Password = password;
         this.Image = image;
         //todo: from settings get server url
-        Server = "localhost:5067";
+        Server = "10.0.2.2:5067";
         last = null;
         lastdate = null;
     }

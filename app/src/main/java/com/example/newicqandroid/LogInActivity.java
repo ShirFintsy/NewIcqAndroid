@@ -41,6 +41,10 @@ public class LogInActivity extends AppCompatActivity implements IOnResponse {
         apiManager.checkValidation(username, password, this);
     }
 
+    private void getDataFromServer(String username){
+        apiManager.getData(username, getApplicationContext());
+    }
+
     @Override
     public void onResponseValidation(boolean username, boolean password) {
         if (!username) { // user is not exists
@@ -69,6 +73,11 @@ public class LogInActivity extends AppCompatActivity implements IOnResponse {
 
         if (validationFlags[0] && validationFlags[1]) {
             String user = binding.userNameInput.getText().toString();
+            //signIn in server- save the user in session
+            apiManager.signIn(user, getApplicationContext());
+            //load the data from the server
+            //getDataFromServer(user);
+
             // enter chats activity:
             Intent intent = new Intent(getApplicationContext(), ChatsActivity.class);
             intent.putExtra("username", user);

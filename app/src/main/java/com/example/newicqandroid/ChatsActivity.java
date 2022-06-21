@@ -10,21 +10,18 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 import com.example.newicqandroid.adapters.UsersListAdapter;
 import com.example.newicqandroid.api.ApiManager;
 import com.example.newicqandroid.databinding.ActivityChatsBinding;
-import com.example.newicqandroid.entities.User;
 import com.example.newicqandroid.entities.Chat;
 import com.example.newicqandroid.repositories.ChatRepository;
-import com.example.newicqandroid.viewModels.ChatsViewModel;
+import com.example.newicqandroid.repositories.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,8 +33,8 @@ public class ChatsActivity extends AppCompatActivity implements UsersListAdapter
     private ApiManager apiManager = new ApiManager();
     private UsersListAdapter usersListAdapter;
     private List<Chat> userList;
-    private ChatsViewModel viewModel;
     private ChatRepository chatRepository;
+    private UserRepository userRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +42,7 @@ public class ChatsActivity extends AppCompatActivity implements UsersListAdapter
         binding = ActivityChatsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         chatRepository = new ChatRepository(getApplicationContext());
-
+        userRepository = new UserRepository(getApplicationContext());
 //        //view model:
 //        viewModel = new ViewModelProvider(this).get(ChatsViewModel.class);
 //        viewModel.getChats().observe(this, new Observer<Chat>() {
@@ -62,6 +59,7 @@ public class ChatsActivity extends AppCompatActivity implements UsersListAdapter
         binding.username.setText(username);
         connectedUser = username;
         //todo: add profile picture from user by api
+        //binding.profilePicture.setImageBitmap(userRepository.getProfilePic(connectedUser));
 
         // adapter for recycle list:
         userList = new ArrayList<>();
@@ -80,6 +78,8 @@ public class ChatsActivity extends AppCompatActivity implements UsersListAdapter
         Chat current = chatRepository.insertChat(chat);
         userList.add(current);
         usersListAdapter.addChat(current);
+
+        //todo: add chat in api
     }
 
     private void addChat(View v){
@@ -90,10 +90,12 @@ public class ChatsActivity extends AppCompatActivity implements UsersListAdapter
 
     private void setUpChats() {
         List<Chat> userChats = chatRepository.getChatsByUser(connectedUser);
-        for(Chat c: userChats) {
+        userList = userChats;
+        usersListAdapter.setChats(userChats);
+        /*for(Chat c: userChats) {
             userList.add(c);
             usersListAdapter.addChat(c);
-        }
+        }*/
     }
 
     // get result from add chat activity
@@ -119,5 +121,17 @@ public class ChatsActivity extends AppCompatActivity implements UsersListAdapter
         intent.putExtra("username", connectedUser);
         intent.putExtra("idChat", chat.getIdChat());
         startActivity(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setUpChats();
+    }
+
+    //todo: this will sign out user and upload to server
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }
