@@ -69,4 +69,7 @@ public class AddChatsActivity extends AppCompatActivity implements IOnResponse{
 
         }
     }
+
+    @Override
+    public void onResponseSignIn() { }
 }

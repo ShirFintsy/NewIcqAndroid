@@ -169,6 +169,7 @@ public class ApiManager {
 
                          }
                     }
+
                }
 
                @Override
@@ -203,7 +204,7 @@ public class ApiManager {
      }
 
 
-     public void signIn(String username, Context context){
+     public void signIn(String username, Context context, IOnResponse func){
           Call<Void> call = apiWebService.signIn(username);
 
           call.enqueue(new Callback<Void>() {
@@ -212,6 +213,7 @@ public class ApiManager {
                public void onResponse(Call<Void> call, Response<Void> response) {
                     getContacts(username, context);
                     getChats(username, context);
+                    func.onResponseSignIn();
                }
 
                @Override

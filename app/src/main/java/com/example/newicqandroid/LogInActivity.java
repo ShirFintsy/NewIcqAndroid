@@ -71,17 +71,21 @@ public class LogInActivity extends AppCompatActivity implements IOnResponse {
             String user = binding.userNameInput.getText().toString();
             //signIn in server- save the user in session
             //and load the data from the server
-            apiManager.signIn(user, getApplicationContext());
+            apiManager.signIn(user, getApplicationContext(), this);
 
 
-
-            // enter chats activity:
-            Intent intent = new Intent(getApplicationContext(), ChatsActivity.class);
-            intent.putExtra("username", user);
-            startActivity(intent);
         }
     }
 
     @Override
     public void onResponseGetUser(User user) { }
+
+    @Override
+    public void onResponseSignIn() {
+        String user = binding.userNameInput.getText().toString();
+        // enter chats activity:
+        Intent intent = new Intent(getApplicationContext(), ChatsActivity.class);
+        intent.putExtra("username", user);
+        startActivity(intent);
+    }
 }
