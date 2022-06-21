@@ -2,7 +2,6 @@ package com.example.newicqandroid.api;
 
 import android.content.Context;
 import android.os.Build;
-import android.util.Log;
 import android.util.Pair;
 
 import androidx.annotation.RequiresApi;
@@ -14,10 +13,10 @@ import com.example.newicqandroid.entities.User;
 import com.example.newicqandroid.repositories.ChatRepository;
 import com.example.newicqandroid.repositories.MessagesRepository;
 import com.example.newicqandroid.repositories.UserRepository;
+import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import retrofit2.Call;
@@ -83,13 +82,14 @@ public class ApiManager {
           });
      }
 
-     public void addUser(User user){
+     public void addUser(User user, Context context){
           Call<User> call = apiWebService.addUser(user);
           call.enqueue(new Callback<User>() {
                @RequiresApi(api = Build.VERSION_CODES.N)
                @Override
                public void onResponse(Call<User> call, Response<User> response) {
-
+                    getContacts(user.getId(), context);
+                    getChats(user.getId(), context);
                }
 
                @Override
@@ -100,31 +100,67 @@ public class ApiManager {
      }
 
 
-     public void getData(String username, Context context){
-          Call<List<User>> call1 = apiWebService.getContacts();
-         // Call<List<Pair<Integer,String>>> call2 = apiWebService.getUserChats(username);
-
-/*
-          Callback<List<Message>> callbackMsgs =  new Callback<List<Message>>() {
+     private void getChats(String username, Context context){
+          Call<List<ApiTupleResponse>> call = apiWebService.getUserChats(username);
+          call.enqueue(new Callback<List<ApiTupleResponse>>() {
                @RequiresApi(api = Build.VERSION_CODES.N)
                @Override
-               public void onResponse(Call<List<Message>> call, Response<List<Message>> response) {
-                    //add to users repository
-                    MessagesRepository msgRepo = new MessagesRepository(context, -1);
-                    List<Message> msgs = response.body();
-                    if(msgs!=null) {
-                         for (Message msg : msgs) {
-                              msgRepo.insertMsg(msg);
+               public void onResponse(Call<List<ApiTupleResponse>> call,
+                                      Response<List<ApiTupleResponse>> response) {
+                    //add to chats repository
+                    ChatRepository chatRepository = new ChatRepository(context);
+                    List<ApiTupleResponse> chats = response.body();
+                    if(chats!=null) {
+                         for (ApiTupleResponse chat : chats) {
+                              Chat c = new Chat(username, chat.getItem2());
+                              chatRepository.insertChat(c);
+                              int idChat = c.getIdChat();
+
+                              //get messages of this chat
+                              Call<List<Message>> call3 = apiWebService.getMsgs(username, chat.getItem1());
+                              //call3.enqueue(callbackMsgs);
+                              call3.enqueue(new Callback<List<Message>>() {
+                                   @Override
+                                   public void onResponse(Call<List<Message>> call, Response<List<Message>> response) {
+                                        //add to users repository
+                                        //MessagesRepository msgRepo = new MessagesRepository(context, idChat);
+                                        List<Message> msgs = response.body();
+                                        if(msgs!=null) {
+                                             for (Message msg : msgs) {
+                                                  msg.setIdChat(idChat);
+                                                  if(msg.isSent()) {
+                                                       msg.setFromIdUser(username);
+                                                       msg.setToIdUser(chat.getItem2());
+                                                  }else{
+                                                       msg.setFromIdUser(chat.getItem2());
+                                                       msg.setToIdUser(username);
+                                                  }
+                                                  MessagesRepository.insertMsg(msg, context);
+                                                  //msgRepo.addMsg(msg);
+                                             }
+
+                                        }
+                                   }
+                                   @Override
+                                   public void onFailure(Call<List<Message>> call, Throwable t) {
+
+                                   }
+                              });
+
                          }
                     }
                }
 
                @Override
-               public void onFailure(Call<List<Message>> call, Throwable t) {
+               public void onFailure(Call<List<ApiTupleResponse>> call, Throwable t) {
 
                }
-          };*/
+          });
+     }
 
+
+     private void getContacts(String username, Context context){
+          Call<List<User>> call1 = apiWebService.getContacts(username);
           call1.enqueue(new Callback<List<User>>() {
                @RequiresApi(api = Build.VERSION_CODES.N)
                @Override
@@ -144,74 +180,22 @@ public class ApiManager {
 
                }
           });
-          /*
-          call2.enqueue(new Callback<List<Pair<Integer,String>>>() {
-               @RequiresApi(api = Build.VERSION_CODES.N)
-               @Override
-               public void onResponse(Call<List<Pair<Integer,String>>> call,
-                  Response<List<Pair<Integer,String>>> response) {
-                    //add to chats repository
-                    ChatRepository chatRepository = new ChatRepository(context);
-                    List<Pair<Integer,String>> chats = response.body();
-                    if(chats!=null) {
-                         for (Pair<Integer, String> chat : chats) {
-                              chatRepository.insertChat(new Chat(chat.first,
-                                      username, chat.second));
-
-                              //get messages of this chat
-                              Call<List<Message>> call3 = apiWebService.getMsgs(chat.first);
-                              //call3.enqueue(callbackMsgs);
-                              call3.enqueue(new Callback<List<Message>>() {
-                                   @Override
-                                   public void onResponse(Call<List<Message>> call, Response<List<Message>> response) {
-                                        //add to users repository
-                                        MessagesRepository msgRepo = new MessagesRepository(context, chat.first);
-                                        List<Message> msgs = response.body();
-                                        if(msgs!=null) {
-                                             for (Message msg : msgs) {
-                                                  msg.setIdChat(chat.first);
-                                                  if(msg.isSent()) {
-                                                       msg.setFromIdUser(username);
-                                                  }else{
-                                                       msg.setToIdUser(chat.second);
-                                                  }
-                                                  msgRepo.addMsg(msg);
-                                             }
-
-                                        }
-                                   }
-                                   @Override
-                                   public void onFailure(Call<List<Message>> call, Throwable t) {
-
-                                   }
-                              });
-
-                         }
-                    }
-               }
-
-               @Override
-               public void onFailure(Call<List<Pair<Integer,String>>> call, Throwable t) {
-
-               }
-          });*/
      }
 
 
      public void signIn(String username, Context context){
-          Call<User> call = apiWebService.signIn(username);
+          Call<Void> call = apiWebService.signIn(username);
 
-          call.enqueue(new Callback<User>() {
+          call.enqueue(new Callback<Void>() {
                @RequiresApi(api = Build.VERSION_CODES.N)
                @Override
-               public void onResponse(Call<User> call, Response<User> response) {
-                   // Log.i("hiiii","success");
-
-                    getData(username, context);
+               public void onResponse(Call<Void> call, Response<Void> response) {
+                    getContacts(username, context);
+                    getChats(username, context);
                }
 
                @Override
-               public void onFailure(Call<User> call, Throwable t) {
+               public void onFailure(Call<Void> call, Throwable t) {
 
                }
           });

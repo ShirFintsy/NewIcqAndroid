@@ -107,8 +107,8 @@ public class RegisterActivity extends AppCompatActivity implements IOnResponse {
         userRepository.addUser(registeredUser);
 
         //move to the chats activity
-        Intent intent = new Intent(getApplicationContext(), LogInActivity.class);
-        //intent.putExtra("username", binding.userNameInput.getText().toString());
+        Intent intent = new Intent(getApplicationContext(), ChatsActivity.class);
+        intent.putExtra("username", binding.userNameInput.getText().toString());
         startActivity(intent);
     }
 

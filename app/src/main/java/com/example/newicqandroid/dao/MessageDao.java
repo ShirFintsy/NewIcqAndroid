@@ -22,6 +22,10 @@ public interface MessageDao {
     List<Message> getMsgsByChat(int idChat);
 
     @Transaction
+    @Query("SELECT * FROM messages WHERE Id = :idMsg")
+    Message getMsgById(int idMsg);
+
+    @Transaction
     @Insert
     void Insert(Message msg);
 
