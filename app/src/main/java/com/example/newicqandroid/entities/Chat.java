@@ -5,19 +5,23 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "chats")
 public class Chat {
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey(autoGenerate = false)
     private int idChat;
     private String idUser1;
     private String idUser2;
 
-    public Chat(){}
+    private static int counterId = 0;
+
+    private void generateId(){
+        counterId++;
+        idChat = counterId;
+    }
+    public Chat(){
+       generateId();
+    }
 
     public Chat(String idUser1, String idUser2) {
-        this.idUser1 = idUser1;
-        this.idUser2 = idUser2;
-    }
-    public Chat(int idChat, String idUser1, String idUser2) {
-        this.idChat = idChat;
+        generateId();
         this.idUser1 = idUser1;
         this.idUser2 = idUser2;
     }

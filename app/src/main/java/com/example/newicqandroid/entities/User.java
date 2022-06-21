@@ -19,7 +19,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 @Entity(tableName = "users")
-public class User {
+public class User{
 //    private String Id;
 //    private String Name;
 //    private String Password;

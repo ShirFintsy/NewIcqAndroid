@@ -10,28 +10,40 @@ import java.util.Date;
 public class Message {
 
     @PrimaryKey(autoGenerate = true)
-    private int idMsg;
+    private int Id;
 
     private int idChat;
     private String fromIdUser;
     private String toIdUser;
 
-    private String content;
-    private String created;
-    private boolean sent;
+    private String Content;
+    private String Created;
+    private boolean Sent;
 
-    public Message(){}
+    //private static int counterId = 0;
+
+   /* public void generateId(){
+        counterId++;
+        Id = counterId;
+
+    }*/
+
+    public Message(){
+        //generateId();
+    }
 
     public Message(String content, String created, boolean sent){
-        this.content = content;
-        this.created = created;
-        this.sent = sent;
+       // generateId();
+        this.Content = content;
+        this.Created = created;
+        this.Sent = sent;
     }
 
     public Message(String content, String from, String to, int idChat){
+        //generateId();
         this.idChat = idChat;
-        this.content = content;
-        created = new Date().toString();
+        this.Content = content;
+        Created = new Date().toString();
         fromIdUser = from;
         toIdUser = to;
     }
@@ -60,36 +72,36 @@ public class Message {
         this.toIdUser = toIdUser;
     }
 
-    public int getIdMsg() {
-        return idMsg;
+    public int getId() {
+        return Id;
     }
 
-    public void setIdMsg(int idMsg) {
-        this.idMsg = idMsg;
+    public void setId(int id) {
+        this.Id = id;
     }
 
     public String getContent() {
-        return content;
+        return Content;
     }
 
     public void setContent(String content) {
-        this.content = content;
+        this.Content = content;
     }
 
     public String getCreated() {
-        return created;
+        return Created;
     }
 
     public void setCreated(String created) {
-        this.created = created;
+        this.Created = created;
     }
 
     public boolean isSent() {
-        return sent;
+        return Sent;
     }
 
     public void setSent(boolean sent) {
-        this.sent = sent;
+        this.Sent = sent;
     }
 
 
