@@ -53,17 +53,20 @@ public class AddChatsActivity extends AppCompatActivity implements IOnResponse{
             }
             Chat current = db.chatDao().getChatByUsers(user.getId(), connectedUser);
             if (current != null) { // chat is already on screen
-                binding.addChatInput.setError("Chat is already on screen");
-                binding.addChatInput.requestFocus();
-                toIntent.putExtra("add", "false");
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        binding.addChatInput.setError("Chat is already on screen");
+                        binding.addChatInput.requestFocus();
+                    }
+                });
+
             } else {
-                toIntent.putExtra("add", "true"); // notify the chats activity to add this chat to local db
+                // notify the chats activity to add this chat to local db
+                toIntent.putExtra("username", user.getId());
+                setResult(RESULT_OK, toIntent);
+                finish();
             }
 
-
-            toIntent.putExtra("username", user.getId());
-            setResult(RESULT_OK, toIntent);
-            finish();
         }
     }
 }
