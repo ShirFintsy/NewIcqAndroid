@@ -24,4 +24,5 @@ public interface UserDao {
     @Transaction
     @Insert
     void Insert(User user);
+
 }

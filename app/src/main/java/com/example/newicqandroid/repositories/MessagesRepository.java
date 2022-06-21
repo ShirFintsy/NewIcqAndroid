@@ -38,10 +38,13 @@ public class MessagesRepository {
         //todo: in the future add update to api
     }
 
-    /*
-    public void insertMsg(Message message){
-        msgsListData.add(message);
-    }*/
+
+    public static void insertMsg(Message message, Context context){
+        AppLocalDB db = AppLocalDB.createAppDBInstance(context);
+        MessageDao msgDao = db.messageDao();
+        if(msgDao.getMsgById(message.getId()) == null)
+            msgDao.Insert(message);
+    }
 
 
     class MessagesListData extends MutableLiveData<List<Message>>{

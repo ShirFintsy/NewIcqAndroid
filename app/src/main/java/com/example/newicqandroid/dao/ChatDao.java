@@ -1,6 +1,7 @@
 package com.example.newicqandroid.dao;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Transaction;
@@ -29,4 +30,5 @@ public interface ChatDao {
     @Transaction
     @Insert
     void Insert(Chat chat);
+
 }

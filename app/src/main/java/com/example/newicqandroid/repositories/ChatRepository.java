@@ -29,7 +29,8 @@ public class ChatRepository {
     }
 
     public Chat insertChat(Chat chat) {
-        chatDao.Insert(chat);
+        if(chatDao.getChatByUsers(chat.getIdUser1(), chat.getIdUser2()) == null)
+            chatDao.Insert(chat);
         return chatDao.getChatByUsers(chat.getIdUser1(), chat.getIdUser2());
     }
     public String getOtherUser(String user, int idChat){

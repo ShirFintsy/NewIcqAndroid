@@ -14,7 +14,7 @@ import com.example.newicqandroid.entities.Message;
 import com.example.newicqandroid.entities.User;
 
 
-@Database(entities = {User.class, Message.class, Chat.class}, version = 6)
+@Database(entities = {User.class, Message.class, Chat.class}, version = 15)
 public abstract class AppLocalDB extends RoomDatabase {
     private static AppLocalDB appDB = null;
 

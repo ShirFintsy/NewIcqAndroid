@@ -15,11 +15,13 @@ import java.util.Objects;
 public class UserRepository {
     private UserDao userDao;
     private ApiManager api;
+    private Context context;
 
     public UserRepository(Context context){
         AppLocalDB db = AppLocalDB.createAppDBInstance(context);
         userDao = db.userDao();
         api = new ApiManager();
+        this.context = context;
     }
 
     public String getDisplayName(String username){
@@ -36,7 +38,7 @@ public class UserRepository {
             userDao.Insert(user);
         }
 
-        api.addUser(user);
+        api.addUser(user, context);
     }
 
     public User getUser(String username){
