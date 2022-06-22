@@ -8,6 +8,7 @@ import androidx.annotation.RequiresApi;
 
 import com.example.newicqandroid.IOnResponse;
 import com.example.newicqandroid.entities.Chat;
+import com.example.newicqandroid.entities.InvitaionApi;
 import com.example.newicqandroid.entities.Message;
 import com.example.newicqandroid.entities.User;
 import com.example.newicqandroid.repositories.ChatRepository;
@@ -29,13 +30,27 @@ public class ApiManager {
 
      Retrofit retrofit;
      IApiWebService apiWebService;
+     String url;
 
-     public ApiManager(){
-          retrofit = new Retrofit.Builder().baseUrl("http://10.0.2.2:5067/api/")
+     public ApiManager(String server){
+          this.url = server;
+          retrofit = new Retrofit.Builder().baseUrl(url)
                     .callbackExecutor(Executors.newSingleThreadExecutor())
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
           apiWebService = retrofit.create(IApiWebService.class);
+     }
+
+//     public ApiManager(String server) {
+//          retrofit = new Retrofit.Builder().baseUrl(server)
+//                  .callbackExecutor(Executors.newSingleThreadExecutor())
+//                  .addConverterFactory(GsonConverterFactory.create())
+//                  .build();
+//          apiWebService = retrofit.create(IApiWebService.class);
+//     }
+
+     public void setServer(String url) {
+          this.url = url;
      }
 
      public void checkValidation(String username, String password, IOnResponse func) {
@@ -99,6 +114,24 @@ public class ApiManager {
           });
      }
 
+     public void addChat(Chat chat){
+          InvitaionApi invitation = new InvitaionApi(chat.getIdUser1(), chat.getIdUser2(), "localhost:5067");
+          Call<Void> call = apiWebService.invitations(invitation);
+          call.enqueue(new Callback<Void>() {
+               @RequiresApi(api = Build.VERSION_CODES.N)
+               @Override
+               public void onResponse(Call<Void> call, Response<Void> response) {
+
+               }
+
+               @Override
+               public void onFailure(Call<Void> call, Throwable t) {
+
+               }
+          });
+     }
+
+
 
      private void getChats(String username, Context context){
           Call<List<ApiTupleResponse>> call = apiWebService.getUserChats(username);
@@ -107,6 +140,7 @@ public class ApiManager {
                @Override
                public void onResponse(Call<List<ApiTupleResponse>> call,
                                       Response<List<ApiTupleResponse>> response) {
+
                     //add to chats repository
                     ChatRepository chatRepository = new ChatRepository(context);
                     List<ApiTupleResponse> chats = response.body();
@@ -149,6 +183,7 @@ public class ApiManager {
 
                          }
                     }
+
                }
 
                @Override
@@ -183,7 +218,7 @@ public class ApiManager {
      }
 
 
-     public void signIn(String username, Context context){
+     public void signIn(String username, Context context, IOnResponse func){
           Call<Void> call = apiWebService.signIn(username);
 
           call.enqueue(new Callback<Void>() {
@@ -192,6 +227,7 @@ public class ApiManager {
                public void onResponse(Call<Void> call, Response<Void> response) {
                     getContacts(username, context);
                     getChats(username, context);
+                    func.onResponseSignIn();
                }
 
                @Override

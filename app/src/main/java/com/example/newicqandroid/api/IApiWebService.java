@@ -4,6 +4,7 @@ package com.example.newicqandroid.api;
 import android.util.Pair;
 
 import com.example.newicqandroid.entities.Chat;
+import com.example.newicqandroid.entities.InvitaionApi;
 import com.example.newicqandroid.entities.Message;
 import com.example.newicqandroid.entities.User;
 
@@ -37,5 +38,8 @@ public interface IApiWebService {
 
     @GET("chats/msgs/{username}/{chatId}")
     Call<List<Message>> getMsgs(@Path("username") String username, @Path("chatId") int chatId);
+
+    @POST("invitations")
+    Call<Void> invitations(@Body InvitaionApi invitations);
 
 }

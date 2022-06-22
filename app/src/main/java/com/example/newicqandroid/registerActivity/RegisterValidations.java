@@ -7,14 +7,14 @@ import com.example.newicqandroid.api.ApiManager;
 
 public class RegisterValidations {
     private ActivityRegisterBinding binding;
-    private ApiManager apiManager = new ApiManager();
+    private ApiManager apiManager;
 
     public RegisterValidations(ActivityRegisterBinding binding){
         this.binding = binding;
     }
 
-    public void checkIsExists(String username, IOnResponse activity){
-        //apiManager.IsUserExists(username, activity);
+    public void checkIsExists(String username, IOnResponse activity, String server){
+        apiManager = new ApiManager(server);
         apiManager.checkValidation(username, "", activity);
     }
 }

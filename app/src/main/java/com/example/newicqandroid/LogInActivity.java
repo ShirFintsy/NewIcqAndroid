@@ -2,35 +2,52 @@ package com.example.newicqandroid;
 
 import static java.lang.Thread.sleep;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.example.newicqandroid.api.ApiManager;
 import com.example.newicqandroid.databinding.ActivityLoginBinding;
 import com.example.newicqandroid.entities.User;
 import com.example.newicqandroid.registerActivity.RegisterActivity;
+import com.example.newicqandroid.repositories.UserRepository;
 
 public class LogInActivity extends AppCompatActivity implements IOnResponse {
 
     private ActivityLoginBinding binding;
-    private final ApiManager apiManager = new ApiManager();
+    private ApiManager apiManager;
+    private UserRepository userRepo;
+    private String server = "http://10.0.2.2:5067/api/";
     boolean validationFlags[] = {false, false};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        userRepo = new UserRepository(getApplicationContext());
         setListeners();
     }
     private void setListeners(){
         binding.btnLogin.setOnClickListener(view ->{
+            apiManager = new ApiManager(server);
             login();
         });
         binding.registerLink.setOnClickListener(
-                view ->
-                    startActivity(new Intent(getApplicationContext(), RegisterActivity.class))
+                view ->{
+                    Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
+                    intent.putExtra("server", server);
+                    startActivity(intent);
+                }
+
         );
     }
 
@@ -41,6 +58,9 @@ public class LogInActivity extends AppCompatActivity implements IOnResponse {
         apiManager.checkValidation(username, password, this);
     }
 
+    public void setServer(String server) {
+        this.server = server;
+    }
     @Override
     public void onResponseValidation(boolean username, boolean password) {
         if (!username) { // user is not exists
@@ -69,19 +89,59 @@ public class LogInActivity extends AppCompatActivity implements IOnResponse {
 
         if (validationFlags[0] && validationFlags[1]) {
             String user = binding.userNameInput.getText().toString();
+            apiManager.getUser(user, this);
             //signIn in server- save the user in session
             //and load the data from the server
-            apiManager.signIn(user, getApplicationContext());
+            apiManager.signIn(user, getApplicationContext(), this);
 
 
-
-            // enter chats activity:
-            Intent intent = new Intent(getApplicationContext(), ChatsActivity.class);
-            intent.putExtra("username", user);
-            startActivity(intent);
         }
     }
 
     @Override
-    public void onResponseGetUser(User user) { }
+    public void onResponseGetUser(User user) {
+        if (userRepo.getUser(user.getId()) == null) {
+            userRepo.addUser(user);
+        }
+    }
+
+    @Override
+    public void onResponseSignIn() {
+        String user = binding.userNameInput.getText().toString();
+        // enter chats activity:
+        Intent intent = new Intent(getApplicationContext(), ChatsActivity.class);
+        intent.putExtra("username", user);
+        intent.putExtra("server", server);
+        startActivity(intent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.setting_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == R.id.settingOption) {
+            Intent intent = new Intent(getApplicationContext(), SettingActivity.class);
+            someActivityResultLauncher.launch(intent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    // get result from setting activity
+    ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        // There are no request codes
+                        Intent data = result.getData();
+                        String server = data.getExtras().getString("server");
+                        setServer(server);
+                    }
+                }
+            });
 }

@@ -4,6 +4,7 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -14,14 +15,22 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.newicqandroid.adapters.UsersListAdapter;
 import com.example.newicqandroid.api.ApiManager;
 import com.example.newicqandroid.databinding.ActivityChatsBinding;
 import com.example.newicqandroid.entities.Chat;
+import com.example.newicqandroid.entities.InvitaionApi;
 import com.example.newicqandroid.repositories.ChatRepository;
 import com.example.newicqandroid.repositories.UserRepository;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessagingService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,9 +39,10 @@ public class ChatsActivity extends AppCompatActivity implements UsersListAdapter
 
     private ActivityChatsBinding binding;
     private String connectedUser;
-    private ApiManager apiManager = new ApiManager();
+    private ApiManager apiManager;
     private UsersListAdapter usersListAdapter;
     private List<Chat> userList;
+    private String server;
     private ChatRepository chatRepository;
     private UserRepository userRepository;
 
@@ -43,21 +53,15 @@ public class ChatsActivity extends AppCompatActivity implements UsersListAdapter
         setContentView(binding.getRoot());
         chatRepository = new ChatRepository(getApplicationContext());
         userRepository = new UserRepository(getApplicationContext());
-//        //view model:
-//        viewModel = new ViewModelProvider(this).get(ChatsViewModel.class);
-//        viewModel.getChats().observe(this, new Observer<Chat>() {
-//            @Override
-//            public void onChanged(Chat chats) {
-//
-//            }
-//        });
 
 
         // current intent:
         Intent intent = getIntent();
         String username = intent.getExtras().getString("username");
-        binding.username.setText(username);
+        server = intent.getExtras().getString("server");
+        binding.username.setText(userRepository.getDisplayName(username));
         connectedUser = username;
+        apiManager = new ApiManager(server);
         //todo: add profile picture from user by api
         //binding.profilePicture.setImageBitmap(userRepository.getProfilePic(connectedUser));
 
@@ -69,33 +73,44 @@ public class ChatsActivity extends AppCompatActivity implements UsersListAdapter
         usersList.setLayoutManager(new LinearLayoutManager(this));
         setUpChats();
 
+        //firebase:
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(this,
+                new OnSuccessListener<InstanceIdResult>() {
+                    @Override
+                    public void onSuccess(InstanceIdResult instanceIdResult) {
+                        String newToken = instanceIdResult.getToken();
+                    }
+                });
+
         // set listener to the add chat floating button
         binding.addChat.setOnClickListener(this::addChat);
     }
+
+
 
     public void addThisUser(String username){
         Chat chat = new Chat(connectedUser, username);
         Chat current = chatRepository.insertChat(chat);
         userList.add(current);
         usersListAdapter.addChat(current);
-
-        //todo: add chat in api
+        apiManager.addChat(chat);
     }
 
     private void addChat(View v){
         Intent intent = new Intent(getApplicationContext(), AddChatsActivity.class);
         intent.putExtra("connected", connectedUser);
+        intent.putExtra("server", server);
         someActivityResultLauncher.launch(intent);
+    }
+
+    public void  setServer(String serverUrl) {
+        apiManager.setServer(serverUrl);
     }
 
     private void setUpChats() {
         List<Chat> userChats = chatRepository.getChatsByUser(connectedUser);
         userList = userChats;
         usersListAdapter.setChats(userChats);
-        /*for(Chat c: userChats) {
-            userList.add(c);
-            usersListAdapter.addChat(c);
-        }*/
     }
 
     // get result from add chat activity

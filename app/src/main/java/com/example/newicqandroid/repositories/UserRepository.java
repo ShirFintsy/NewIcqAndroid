@@ -20,7 +20,7 @@ public class UserRepository {
     public UserRepository(Context context){
         AppLocalDB db = AppLocalDB.createAppDBInstance(context);
         userDao = db.userDao();
-        api = new ApiManager();
+        //api = new ApiManager();
         this.context = context;
     }
 
@@ -38,7 +38,7 @@ public class UserRepository {
             userDao.Insert(user);
         }
 
-        api.addUser(user, context);
+        //api.addUser(user, context);
     }
 
     public User getUser(String username){

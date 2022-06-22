@@ -2,7 +2,7 @@ package com.example.newicqandroid.entities;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
@@ -43,9 +43,12 @@ public class Message {
         //generateId();
         this.idChat = idChat;
         this.Content = content;
-        Created = new Date().toString();
         fromIdUser = from;
         toIdUser = to;
+
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        Date d = new Date();
+        Created = formatter.format(d);
     }
 
     public int getIdChat() {
