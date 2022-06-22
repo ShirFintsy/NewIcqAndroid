@@ -11,17 +11,20 @@ import com.example.newicqandroid.api.ApiManager;
 import com.example.newicqandroid.databinding.ActivityLoginBinding;
 import com.example.newicqandroid.entities.User;
 import com.example.newicqandroid.registerActivity.RegisterActivity;
+import com.example.newicqandroid.repositories.UserRepository;
 
 public class LogInActivity extends AppCompatActivity implements IOnResponse {
 
     private ActivityLoginBinding binding;
     private final ApiManager apiManager = new ApiManager();
+    private UserRepository userRepo;
     boolean validationFlags[] = {false, false};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        userRepo = new UserRepository(getApplicationContext());
         setListeners();
     }
     private void setListeners(){
@@ -69,6 +72,7 @@ public class LogInActivity extends AppCompatActivity implements IOnResponse {
 
         if (validationFlags[0] && validationFlags[1]) {
             String user = binding.userNameInput.getText().toString();
+            apiManager.getUser(user, this);
             //signIn in server- save the user in session
             //and load the data from the server
             apiManager.signIn(user, getApplicationContext(), this);
@@ -78,7 +82,11 @@ public class LogInActivity extends AppCompatActivity implements IOnResponse {
     }
 
     @Override
-    public void onResponseGetUser(User user) { }
+    public void onResponseGetUser(User user) {
+        if (userRepo.getUser(user.getId()) == null) {
+            userRepo.addUser(user);
+        }
+    }
 
     @Override
     public void onResponseSignIn() {

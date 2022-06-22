@@ -30,9 +30,10 @@ public class ApiManager {
 
      Retrofit retrofit;
      IApiWebService apiWebService;
+     String url = "http://10.0.2.2:5067/api/";
 
      public ApiManager(){
-          retrofit = new Retrofit.Builder().baseUrl("http://10.0.2.2:5067/api/")
+          retrofit = new Retrofit.Builder().baseUrl(url)
                     .callbackExecutor(Executors.newSingleThreadExecutor())
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
@@ -101,7 +102,7 @@ public class ApiManager {
      }
 
      public void addChat(Chat chat){
-          InvitaionApi invitation = new InvitaionApi(chat.getIdUser1(), chat.getIdUser2(), "android");
+          InvitaionApi invitation = new InvitaionApi(chat.getIdUser1(), chat.getIdUser2(), "localhost:5067");
           Call<Void> call = apiWebService.invitations(invitation);
           call.enqueue(new Callback<Void>() {
                @RequiresApi(api = Build.VERSION_CODES.N)

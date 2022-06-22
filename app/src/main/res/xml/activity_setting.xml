@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="Rate Us">
+        <ListPreference
+            android:defaultValue="false"
+            android:key="RATE"
+            android:entries="@array/verbalRate"
+            android:entryValues="@array/numberRate"
+            android:title="Did You Enjoy With Our App? "/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Change Server">
+        <EditTextPreference
+            android:defaultValue="http://10.0.2.2:5067/api/"
+            android:key="server"
+            android:summary="Pick the server you want to connect with"
+            android:title="Select A Server" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
