@@ -14,8 +14,9 @@ import android.view.View;
 
 public class AddChatsActivity extends AppCompatActivity implements IOnResponse{
     private ActivityAddChatsBinding binding;
-    private ApiManager apiManager = new ApiManager();
+    private ApiManager apiManager;
     private String connectedUser;
+    private String server;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +25,8 @@ public class AddChatsActivity extends AppCompatActivity implements IOnResponse{
         setContentView(binding.getRoot());
         Intent intent = getIntent();
         connectedUser = intent.getExtras().getString("connected");
+        server = intent.getExtras().getString("server");
+        apiManager = new ApiManager(server);
 
         binding.addButton.setOnClickListener(view-> {
             String user = binding.addChatInput.getText().toString();

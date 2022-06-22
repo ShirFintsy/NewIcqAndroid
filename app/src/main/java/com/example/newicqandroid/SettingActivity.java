@@ -28,12 +28,14 @@ public class SettingActivity extends PreferenceActivity {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
                 String server = editTextPref.getEditText().getText().toString();
-                Log.i("new one", server);
+                //Log.i("new one", server);
+                Intent toIntent = new Intent(getApplicationContext(), LogInActivity.class);
+                toIntent.putExtra("server", server);
+                setResult(RESULT_OK, toIntent);
+
                 return true;
             }
         });
-//        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-//        String server = sp.getString("server", "");
-//        //Log.i(server, "");
+        //finish();
     }
 }
