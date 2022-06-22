@@ -32,6 +32,7 @@ public class RegisterActivity extends AppCompatActivity implements IOnResponse {
     private static boolean error = false; //indicates if some field was invalid
     private UserRepository userRepository;
     private User registeredUser = null;
+    private String server;
     private static boolean uploadedImg = false;
 
     @Override
@@ -39,6 +40,8 @@ public class RegisterActivity extends AppCompatActivity implements IOnResponse {
         super.onCreate(savedInstanceState);
         binding = ActivityRegisterBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        Intent intent = getIntent();
+        server = intent.getExtras().getString("server");
         setListeners();
 
         validator = new RegisterValidations(binding);
@@ -74,7 +77,7 @@ public class RegisterActivity extends AppCompatActivity implements IOnResponse {
             binding.userNameInput.requestFocus();
             error = true;
         }else {
-            validator.checkIsExists(username, this);
+            validator.checkIsExists(username, this, server);
             //error = true;
         }
         if(displayName.isEmpty()){
@@ -109,6 +112,7 @@ public class RegisterActivity extends AppCompatActivity implements IOnResponse {
         //move to the chats activity
         Intent intent = new Intent(getApplicationContext(), ChatsActivity.class);
         intent.putExtra("username", binding.userNameInput.getText().toString());
+        intent.putExtra("server", server);
         startActivity(intent);
     }
 
@@ -157,10 +161,6 @@ public class RegisterActivity extends AppCompatActivity implements IOnResponse {
             });
 
         }else if(!error){
-            // todo: for now- until chat activity will word
-            //Intent intent = new Intent(getApplicationContext(), ChatsActivity.class);
-            //intent.putExtra("username", binding.userNameInput.getText().toString());
-            //startActivity(intent);
             endRegistration();
         }
     }

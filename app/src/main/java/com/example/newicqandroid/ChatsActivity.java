@@ -27,6 +27,10 @@ import com.example.newicqandroid.entities.Chat;
 import com.example.newicqandroid.entities.InvitaionApi;
 import com.example.newicqandroid.repositories.ChatRepository;
 import com.example.newicqandroid.repositories.UserRepository;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessagingService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,9 +39,10 @@ public class ChatsActivity extends AppCompatActivity implements UsersListAdapter
 
     private ActivityChatsBinding binding;
     private String connectedUser;
-    private ApiManager apiManager = new ApiManager();
+    private ApiManager apiManager;
     private UsersListAdapter usersListAdapter;
     private List<Chat> userList;
+    private String server;
     private ChatRepository chatRepository;
     private UserRepository userRepository;
 
@@ -49,11 +54,14 @@ public class ChatsActivity extends AppCompatActivity implements UsersListAdapter
         chatRepository = new ChatRepository(getApplicationContext());
         userRepository = new UserRepository(getApplicationContext());
 
+
         // current intent:
         Intent intent = getIntent();
         String username = intent.getExtras().getString("username");
+        server = intent.getExtras().getString("server");
         binding.username.setText(userRepository.getDisplayName(username));
         connectedUser = username;
+        apiManager = new ApiManager(server);
         //todo: add profile picture from user by api
         //binding.profilePicture.setImageBitmap(userRepository.getProfilePic(connectedUser));
 
@@ -65,24 +73,20 @@ public class ChatsActivity extends AppCompatActivity implements UsersListAdapter
         usersList.setLayoutManager(new LinearLayoutManager(this));
         setUpChats();
 
+        //firebase:
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(this,
+                new OnSuccessListener<InstanceIdResult>() {
+                    @Override
+                    public void onSuccess(InstanceIdResult instanceIdResult) {
+                        String newToken = instanceIdResult.getToken();
+                    }
+                });
+
         // set listener to the add chat floating button
         binding.addChat.setOnClickListener(this::addChat);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.setting_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == R.id.settingOption) {
-            Intent intent = new Intent(getApplicationContext(), SettingActivity.class);
-            startActivity(intent);
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     public void addThisUser(String username){
         Chat chat = new Chat(connectedUser, username);
@@ -95,7 +99,12 @@ public class ChatsActivity extends AppCompatActivity implements UsersListAdapter
     private void addChat(View v){
         Intent intent = new Intent(getApplicationContext(), AddChatsActivity.class);
         intent.putExtra("connected", connectedUser);
+        intent.putExtra("server", server);
         someActivityResultLauncher.launch(intent);
+    }
+
+    public void  setServer(String serverUrl) {
+        apiManager.setServer(serverUrl);
     }
 
     private void setUpChats() {

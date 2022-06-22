@@ -30,14 +30,27 @@ public class ApiManager {
 
      Retrofit retrofit;
      IApiWebService apiWebService;
-     String url = "http://10.0.2.2:5067/api/";
+     String url;
 
-     public ApiManager(){
+     public ApiManager(String server){
+          this.url = server;
           retrofit = new Retrofit.Builder().baseUrl(url)
                     .callbackExecutor(Executors.newSingleThreadExecutor())
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
           apiWebService = retrofit.create(IApiWebService.class);
+     }
+
+//     public ApiManager(String server) {
+//          retrofit = new Retrofit.Builder().baseUrl(server)
+//                  .callbackExecutor(Executors.newSingleThreadExecutor())
+//                  .addConverterFactory(GsonConverterFactory.create())
+//                  .build();
+//          apiWebService = retrofit.create(IApiWebService.class);
+//     }
+
+     public void setServer(String url) {
+          this.url = url;
      }
 
      public void checkValidation(String username, String password, IOnResponse func) {
