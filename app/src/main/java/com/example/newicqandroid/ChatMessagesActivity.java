@@ -51,6 +51,7 @@ public class ChatMessagesActivity extends AppCompatActivity {
         Intent intent = getIntent();
         /*gotNotification = intent.getExtras().getString("notification");
         connectedUser = intent.getExtras().getString("username");
+
         otherUser = intent.getExtras().getString("fromUser");
         //Log.i("APPPPPPP --- other user", otherUser);
         Log.i("APPPPPPP --- connected", connectedUser);
