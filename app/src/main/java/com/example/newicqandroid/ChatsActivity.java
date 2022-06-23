@@ -146,11 +146,10 @@ public class ChatsActivity extends AppCompatActivity implements UsersListAdapter
     public void onUserClick(int position) {
         Chat chat = userList.get(position);
         Intent intent = new Intent(getApplicationContext(), ChatMessagesActivity.class);
-        intent.putExtra("username", connectedUser);
-        intent.putExtra("fromUser", chat.getOtherUser(connectedUser));
-        //intent.putExtra("idChat", String.valueOf(chat.getIdChat()));
+        intent.putExtra("user", connectedUser);
+        intent.putExtra("otherUser", chat.getOtherUser(connectedUser));
         intent.putExtra("server", server);
-        intent.putExtra("msg", "null");
+        //intent.putExtra("msg", "null");
         startActivity(intent);
     }
 

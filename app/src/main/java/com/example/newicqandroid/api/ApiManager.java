@@ -43,14 +43,6 @@ public class ApiManager {
           apiWebService = retrofit.create(IApiWebService.class);
      }
 
-//     public ApiManager(String server) {
-//          retrofit = new Retrofit.Builder().baseUrl(server)
-//                  .callbackExecutor(Executors.newSingleThreadExecutor())
-//                  .addConverterFactory(GsonConverterFactory.create())
-//                  .build();
-//          apiWebService = retrofit.create(IApiWebService.class);
-//     }
-
      public void setServer(String url) {
           this.url = url;
      }
