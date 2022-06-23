@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -63,7 +64,7 @@ public class ChatsActivity extends AppCompatActivity implements UsersListAdapter
         connectedUser = username;
         apiManager = new ApiManager(server);
         //todo: add profile picture from user by api
-        //binding.profilePicture.setImageBitmap(userRepository.getProfilePic(connectedUser));
+        setProfile();
 
         // adapter for recycle list:
         userList = new ArrayList<>();
@@ -86,6 +87,14 @@ public class ChatsActivity extends AppCompatActivity implements UsersListAdapter
         binding.addChat.setOnClickListener(this::addChat);
     }
 
+    public void setProfile(){
+        Bitmap profile = userRepository.getProfilePic(connectedUser);
+        if(profile == null){
+            binding.profilePicture.setImageResource(R.drawable.default_picture);
+        }else{
+            binding.profilePicture.setImageBitmap(profile);
+        }
+    }
 
 
     public void addThisUser(String username){

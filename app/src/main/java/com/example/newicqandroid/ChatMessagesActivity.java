@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 
@@ -51,7 +52,17 @@ public class ChatMessagesActivity extends AppCompatActivity {
 
         binding.sendBtn.setOnClickListener(this::onSendMsg);
         binding.displayName.setText(msgsViewModel.getDisplayName(otherUser));
+        setProfile();
         //binding.profilePic.setImageBitmap(msgsViewModel.getProfilePic(otherUser));
+    }
+
+    public void setProfile(){
+        Bitmap profile = msgsViewModel.getProfilePic(connectedUser);
+        if(profile == null){
+            binding.profilePic.setImageResource(R.drawable.default_picture);
+        }else{
+            binding.profilePic.setImageBitmap(profile);
+        }
     }
 
     public void onSendMsg(View v){
