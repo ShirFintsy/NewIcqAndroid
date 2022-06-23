@@ -70,7 +70,7 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.User
         if(!chats.contains(chat)){
             chats.add(chat);
         }
-        notifyDataSetChanged(); // not working when adding from outside
+        notifyDataSetChanged();
     }
     public void setChats(List<Chat> chats){
         this.chats = chats;
@@ -102,7 +102,6 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.User
             }else{
                 holder.profilePicture.setImageBitmap(profile);
             }
-            //holder.profilePicture.setImageBitmap(currentUser.decodeImg());
         }
     }
 

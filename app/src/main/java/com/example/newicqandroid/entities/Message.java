@@ -20,27 +20,16 @@ public class Message {
     private String Created;
     private boolean Sent;
 
-    //private static int counterId = 0;
 
-   /* public void generateId(){
-        counterId++;
-        Id = counterId;
-
-    }*/
-
-    public Message(){
-        //generateId();
-    }
+    public Message(){ }
 
     public Message(String content, String created, boolean sent){
-       // generateId();
         this.Content = content;
         this.Created = created;
         this.Sent = sent;
     }
 
     public Message(String content, String from, String to, int idChat){
-        //generateId();
         this.idChat = idChat;
         this.Content = content;
         fromIdUser = from;

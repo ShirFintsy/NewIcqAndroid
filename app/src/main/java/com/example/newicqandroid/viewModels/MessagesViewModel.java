@@ -37,13 +37,6 @@ public class MessagesViewModel extends ViewModel {
         //need to update the repository- the local db
         msgsRepo.addMsg(msg);
 
-        //and need to update the display,
-        // this list is observed and when its change adapter activates
-        //List<MsgUsers> msgs = messages.getValue();
-        //if(msgs != null){
-          //  msgs.add(msg);
-        //}
-
     }
 
     public String getOtherUser(String user, int idChat){

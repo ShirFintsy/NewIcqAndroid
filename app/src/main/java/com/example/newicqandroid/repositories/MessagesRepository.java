@@ -51,16 +51,6 @@ public class MessagesRepository {
         public MessagesListData(){
             super();
             setValue(new LinkedList<>());
-            //todo: will be deleted!
-            /*
-            User shir =  new User("shir");
-            User rotem =  new User("rotem");
-            List<Message> msgs = new LinkedList<>();
-            msgs.add(new Message("hi", "rotem", "shir", 1));
-            msgs.add(new Message("by", "shir", "rotem", 1));
-
-            setValue(msgs);*/
-
         }
 
         public void add(Message msg){

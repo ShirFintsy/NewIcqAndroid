@@ -59,7 +59,6 @@ public class ChatRepository {
             }
         }
         return last;
-        //return new Message("hi", "shir" , "rotem", chatId);
     }
 
     public List<Chat> getChatsByUser(String username) {

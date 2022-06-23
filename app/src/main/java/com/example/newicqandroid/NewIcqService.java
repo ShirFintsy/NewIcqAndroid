@@ -41,10 +41,8 @@ public class NewIcqService extends FirebaseMessagingService {
             String toUser = data.get("toUser");
             String fromUser = data.get("fromUser");
             String msg = data.get("text");
-            //String merge = toUser.concat(",").concat(fromUser).concat(",").concat(msg);
 
             Intent intent = new Intent(this, ChatMessagesActivity.class);
-            //intent.putExtra("info", merge);
             intent.putExtra("user", toUser);
             intent.putExtra("otherUser", fromUser);
             intent.putExtra("msg", msg);
