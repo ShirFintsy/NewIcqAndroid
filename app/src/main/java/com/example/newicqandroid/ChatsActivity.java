@@ -66,7 +66,7 @@ public class ChatsActivity extends AppCompatActivity implements UsersListAdapter
         binding.username.setText(userRepository.getDisplayName(username));
         connectedUser = username;
         apiManager = new ApiManager(server);
-        //todo: add profile picture from user by api
+
         setProfile();
 
         // adapter for recycle list:
@@ -147,7 +147,8 @@ public class ChatsActivity extends AppCompatActivity implements UsersListAdapter
         Chat chat = userList.get(position);
         Intent intent = new Intent(getApplicationContext(), ChatMessagesActivity.class);
         intent.putExtra("username", connectedUser);
-        intent.putExtra("idChat", chat.getIdChat());
+        intent.putExtra("fromUser", chat.getOtherUser(connectedUser));
+        //intent.putExtra("idChat", String.valueOf(chat.getIdChat()));
         intent.putExtra("server", server);
         intent.putExtra("msg", "null");
         startActivity(intent);
@@ -159,9 +160,4 @@ public class ChatsActivity extends AppCompatActivity implements UsersListAdapter
         setUpChats();
     }
 
-    //todo: this will sign out user and upload to server
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
 }

@@ -40,24 +40,31 @@ public class NewIcqService extends FirebaseMessagingService {
            //get info from server (message details):
             Map<String, String> data = remoteMessage.getData();
             String toUser = data.get("toUser");
-            String chatId = data.get("chatId");
+            String fromUser = data.get("fromUser");
+            //String chatId = data.get("chatId");
             String msg = data.get("text");
             String cpyMsg = new String(msg);
-//            chatRepo = new ChatRepository(this);
-//            String fromUser = chatRepo.getOtherUser(toUser, parseInt(chatId));
-//            Chat c =chatRepo.findChatById(parseInt(chatId));
-//            if (c == null) {
-//                c = chatRepo.insertChat(new Chat(toUser, fromUser));
-//            }
-//            msgRepo = new MessagesRepository(getApplicationContext(), c.getIdChat());
-//            msgRepo.addMsg(new Message(toUser, fromUser, msg, c.getIdChat()));
-//            // enter the right activity by chat:
-//            Intent intent = new Intent(this, ChatsActivity.class);
-//            intent.putExtra("username", toUser);
+
+
+            /*chatRepo = new ChatRepository(this);
+            //String fromUser = chatRepo.getOtherUser(toUser, parseInt(chatId));
+            Chat c = chatRepo.findChatByUsers(toUser, fromUser);
+            if (c == null) {
+                c = chatRepo.insertChat(new Chat(toUser, fromUser));
+            }
+            msgRepo = new MessagesRepository(getApplicationContext(), c.getIdChat());
+            msgRepo.addMsg(new Message(toUser, fromUser, msg, c.getIdChat()));
+            // enter the right activity by chat:
+            Intent intent = new Intent(this, ChatsActivity.class);
+            intent.putExtra("username", toUser);*/
+
+
+
             Intent intent = new Intent(this, ChatMessagesActivity.class);
-            intent.putExtra("notification", msg);
+            /*intent.putExtra("notification", msg);
             intent.putExtra("username", toUser);
-            intent.putExtra("idChat", chatId);
+            intent.putExtra("fromUser", fromUser);*/
+            intent.putExtra("notification", new infoForIntent(toUser, fromUser, msg));
 
             PendingIntent snoozePendingIntent = PendingIntent.getActivity(this, 0, intent, 0, null);
 

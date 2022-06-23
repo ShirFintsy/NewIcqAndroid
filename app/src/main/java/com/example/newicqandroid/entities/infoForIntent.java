@@ -1,23 +1,20 @@
 package com.example.newicqandroid.entities;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import java.io.Serializable;
 
 public class infoForIntent implements Serializable  {
     private String user;
-    private int idChat;
+    private String otherUser;
     private String msg;
 
-    public infoForIntent(String user, int id, String text) {
+    public infoForIntent(String user, String otherUser, String text) {
         this.user =user;
-        this.idChat = id;
+        this.otherUser = otherUser;
         this.msg =text;
     }
 
-    public int getIdChat() {
-        return idChat;
+    public String getOtherUser() {
+        return otherUser;
     }
 
     public String getMsg() {

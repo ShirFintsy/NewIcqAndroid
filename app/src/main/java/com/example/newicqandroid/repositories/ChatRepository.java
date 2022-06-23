@@ -1,6 +1,7 @@
 package com.example.newicqandroid.repositories;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -26,6 +27,12 @@ public class ChatRepository {
 
     public Chat findChatById(int chatID) {
         return chatDao.getChatById(chatID);
+    }
+
+    public Chat findChatByUsers(String user1, String user2) {
+        Log.i("APPPP user1:", user1);
+        Log.i("APPPP user2:", user2);
+        return chatDao.getChatByUsers(user1, user2);
     }
 
     public Chat insertChat(Chat chat) {
