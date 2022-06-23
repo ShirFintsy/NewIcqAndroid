@@ -18,6 +18,7 @@ import com.example.newicqandroid.ChatsActivity;
 import com.example.newicqandroid.IOnResponse;
 import com.example.newicqandroid.LogInActivity;
 import com.example.newicqandroid.Utils;
+import com.example.newicqandroid.api.ApiManager;
 import com.example.newicqandroid.databinding.ActivityRegisterBinding;
 import com.example.newicqandroid.entities.User;
 import com.example.newicqandroid.repositories.UserRepository;
@@ -33,6 +34,7 @@ public class RegisterActivity extends AppCompatActivity implements IOnResponse {
     private UserRepository userRepository;
     private User registeredUser = null;
     private String server;
+    private ApiManager apiManager;
     private static boolean uploadedImg = false;
 
     @Override
@@ -42,6 +44,7 @@ public class RegisterActivity extends AppCompatActivity implements IOnResponse {
         setContentView(binding.getRoot());
         Intent intent = getIntent();
         server = intent.getExtras().getString("server");
+        apiManager = new ApiManager(server);
         setListeners();
 
         validator = new RegisterValidations(binding);
@@ -108,6 +111,8 @@ public class RegisterActivity extends AppCompatActivity implements IOnResponse {
     private void endRegistration(){
         //send the data to the webApi and save in room
         userRepository.addUser(registeredUser);
+        apiManager.addUser(registeredUser, this);
+
 
         //move to the chats activity
         Intent intent = new Intent(getApplicationContext(), ChatsActivity.class);

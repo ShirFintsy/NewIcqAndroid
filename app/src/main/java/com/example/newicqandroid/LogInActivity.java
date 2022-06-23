@@ -102,6 +102,7 @@ public class LogInActivity extends AppCompatActivity implements IOnResponse {
     public void onResponseGetUser(User user) {
         if (userRepo.getUser(user.getId()) == null) {
             userRepo.addUser(user);
+            apiManager.addUser(user, this);
         }
     }
 
