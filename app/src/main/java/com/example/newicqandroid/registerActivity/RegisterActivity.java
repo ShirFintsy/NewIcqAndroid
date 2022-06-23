@@ -81,7 +81,6 @@ public class RegisterActivity extends AppCompatActivity implements IOnResponse {
             error = true;
         }else {
             validator.checkIsExists(username, this, server);
-            //error = true;
         }
         if(displayName.isEmpty()){
             binding.displayNameInput.setError("Please fill out this field");
@@ -101,11 +100,6 @@ public class RegisterActivity extends AppCompatActivity implements IOnResponse {
             binding.confirmPasswordInput.requestFocus();
             error = true;
         }
-
-        //if no error in validation happened
-        //if(!error){
-            //endRegistration();
-       // }
     }
 
     private void endRegistration(){

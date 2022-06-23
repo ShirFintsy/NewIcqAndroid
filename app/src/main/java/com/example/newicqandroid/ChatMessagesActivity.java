@@ -52,13 +52,6 @@ public class ChatMessagesActivity extends AppCompatActivity {
         otherUser = intent.getExtras().getString("otherUser");
         String msg =null;
         msg = intent.getExtras().getString("msg");
-//        String merge = intent.getExtras().getString("info");
-//        String[] split =merge.split(",");
-//        connectedUser = split[0];
-//        otherUser = split[1];
-//        String msg = split[2];
-//        connectedUser = intent.getExtras().getString("username");
-//        otherUser = intent.getExtras().getString("otherUser");
 
         Chat chat = chatRepository.findChatByUsers(connectedUser, otherUser);
 
@@ -76,7 +69,7 @@ public class ChatMessagesActivity extends AppCompatActivity {
 
         msgsViewModel = new ViewModelProvider(this).get(MessagesViewModel.class);
         msgsViewModel.init(getApplicationContext(), idChat);
-        //otherUser = msgsViewModel.getOtherUser(connectedUser, idChat);
+
         RecyclerView msgsRecyclerView = binding.msgsRecyclerView;
         MessagesAdapter msgsAdapter = new MessagesAdapter(this, connectedUser);
 
@@ -90,7 +83,6 @@ public class ChatMessagesActivity extends AppCompatActivity {
         binding.sendBtn.setOnClickListener(this::onSendMsg);
         binding.displayName.setText(msgsViewModel.getDisplayName(otherUser));
         setProfile();
-        //binding.profilePic.setImageBitmap(msgsViewModel.getProfilePic(otherUser));
     }
 
     public void setProfile(){

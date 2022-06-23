@@ -149,7 +149,6 @@ public class ChatsActivity extends AppCompatActivity implements UsersListAdapter
         intent.putExtra("user", connectedUser);
         intent.putExtra("otherUser", chat.getOtherUser(connectedUser));
         intent.putExtra("server", server);
-        //intent.putExtra("msg", "null");
         startActivity(intent);
     }
 

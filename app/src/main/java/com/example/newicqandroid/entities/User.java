@@ -126,27 +126,4 @@ public class User{
     public void setLastdate(String lastdate) {
         this.lastdate = lastdate;
     }
-
-    public Bitmap getDrawableImage() throws java.net.MalformedURLException, java.io.IOException {
-        String url = getImage();
-        if (url == null)
-            return null;
-        HttpURLConnection connection = (HttpURLConnection)new URL(url) .openConnection();
-        connection.setRequestProperty("User-agent","Mozilla/4.0");
-
-        connection.connect();
-        InputStream input = connection.getInputStream();
-
-        return BitmapFactory.decodeStream(input);
-    }
-
-    public Bitmap decodeImg(){
-        String imgStr = getImage();
-        if (imgStr == null)
-            return null;
-        byte[] decodedString = Base64.decode(imgStr, Base64.DEFAULT);
-        Bitmap bitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-
-        return bitmap;
-    }
 }

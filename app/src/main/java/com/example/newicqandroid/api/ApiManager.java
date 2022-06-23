@@ -177,12 +177,11 @@ public class ApiManager {
 
                               //get messages of this chat
                               Call<List<Message>> call3 = apiWebService.getMsgs(username, chat.getItem1());
-                              //call3.enqueue(callbackMsgs);
+
                               call3.enqueue(new Callback<List<Message>>() {
                                    @Override
                                    public void onResponse(Call<List<Message>> call, Response<List<Message>> response) {
                                         //add to users repository
-                                        //MessagesRepository msgRepo = new MessagesRepository(context, idChat);
                                         List<Message> msgs = response.body();
                                         if(msgs!=null) {
                                              for (Message msg : msgs) {
@@ -195,7 +194,6 @@ public class ApiManager {
                                                        msg.setToIdUser(username);
                                                   }
                                                   MessagesRepository.insertMsg(msg, context);
-                                                  //msgRepo.addMsg(msg);
                                              }
 
                                         }
@@ -231,7 +229,7 @@ public class ApiManager {
                     if(users!=null) {
                          for (User user : users) {
                               userRepository.addUser(user);
-                              addUser(user, context); //// ??? right context?
+                              addUser(user, context);
                          }
                     }
                }

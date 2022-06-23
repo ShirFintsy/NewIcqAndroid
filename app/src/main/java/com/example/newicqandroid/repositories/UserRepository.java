@@ -24,7 +24,6 @@ public class UserRepository {
     public UserRepository(Context context){
         AppLocalDB db = AppLocalDB.createAppDBInstance(context);
         userDao = db.userDao();
-       //api = new ApiManager();
         this.context = context;
     }
 
@@ -37,12 +36,9 @@ public class UserRepository {
     }
 
     public void addUser(User user){
-        //todo: delete later
         if(userDao.getByUsername(user.getId()) == null){
             userDao.Insert(user);
         }
-
-        //api.addUser(user, context);
     }
 
     public User getUser(String username){
@@ -63,7 +59,6 @@ public class UserRepository {
             }catch (Exception e){
                 return null;
             }
-            //return BitmapFactory.decodeFile(img);
         }
         return Utils.decodeImg(img);
     }
