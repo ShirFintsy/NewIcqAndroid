@@ -26,6 +26,7 @@ import com.example.newicqandroid.api.ApiManager;
 import com.example.newicqandroid.databinding.ActivityChatsBinding;
 import com.example.newicqandroid.entities.Chat;
 import com.example.newicqandroid.entities.InvitaionApi;
+import com.example.newicqandroid.entities.TokenTuple;
 import com.example.newicqandroid.repositories.ChatRepository;
 import com.example.newicqandroid.repositories.UserRepository;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -60,6 +61,8 @@ public class ChatsActivity extends AppCompatActivity implements UsersListAdapter
         Intent intent = getIntent();
         String username = intent.getExtras().getString("username");
         server = intent.getExtras().getString("server");
+        if (server == null)
+            server = "http://10.0.2.2:5067/api/";
         binding.username.setText(userRepository.getDisplayName(username));
         connectedUser = username;
         apiManager = new ApiManager(server);
@@ -80,6 +83,7 @@ public class ChatsActivity extends AppCompatActivity implements UsersListAdapter
                     @Override
                     public void onSuccess(InstanceIdResult instanceIdResult) {
                         String newToken = instanceIdResult.getToken();
+                        apiManager.addToken(new TokenTuple(connectedUser, newToken));
                     }
                 });
 
@@ -144,6 +148,8 @@ public class ChatsActivity extends AppCompatActivity implements UsersListAdapter
         Intent intent = new Intent(getApplicationContext(), ChatMessagesActivity.class);
         intent.putExtra("username", connectedUser);
         intent.putExtra("idChat", chat.getIdChat());
+        intent.putExtra("server", server);
+        intent.putExtra("msg", "null");
         startActivity(intent);
     }
 

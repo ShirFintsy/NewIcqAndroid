@@ -10,6 +10,8 @@ import com.example.newicqandroid.IOnResponse;
 import com.example.newicqandroid.entities.Chat;
 import com.example.newicqandroid.entities.InvitaionApi;
 import com.example.newicqandroid.entities.Message;
+import com.example.newicqandroid.entities.TokenTuple;
+import com.example.newicqandroid.entities.TransferMessage;
 import com.example.newicqandroid.entities.User;
 import com.example.newicqandroid.repositories.ChatRepository;
 import com.example.newicqandroid.repositories.MessagesRepository;
@@ -131,6 +133,37 @@ public class ApiManager {
           });
      }
 
+     public void addToken(TokenTuple tuple){
+          Call<Void> call = apiWebService.sendToken(tuple);
+          call.enqueue(new Callback<Void>() {
+               @RequiresApi(api = Build.VERSION_CODES.N)
+               @Override
+               public void onResponse(Call<Void> call, Response<Void> response) {
+
+               }
+
+               @Override
+               public void onFailure(Call<Void> call, Throwable t) {
+
+               }
+          });
+     }
+
+     public void sendMessage(TransferMessage msg){
+          Call<Void> call = apiWebService.sendMsg(msg);
+          call.enqueue(new Callback<Void>() {
+               @RequiresApi(api = Build.VERSION_CODES.N)
+               @Override
+               public void onResponse(Call<Void> call, Response<Void> response) {
+
+               }
+
+               @Override
+               public void onFailure(Call<Void> call, Throwable t) {
+
+               }
+          });
+     }
 
 
      private void getChats(String username, Context context){
@@ -206,6 +239,7 @@ public class ApiManager {
                     if(users!=null) {
                          for (User user : users) {
                               userRepository.addUser(user);
+                              addUser(user, context); //// ??? right context?
                          }
                     }
                }

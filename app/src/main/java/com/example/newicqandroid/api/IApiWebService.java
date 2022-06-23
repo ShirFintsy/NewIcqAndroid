@@ -6,6 +6,8 @@ import android.util.Pair;
 import com.example.newicqandroid.entities.Chat;
 import com.example.newicqandroid.entities.InvitaionApi;
 import com.example.newicqandroid.entities.Message;
+import com.example.newicqandroid.entities.TokenTuple;
+import com.example.newicqandroid.entities.TransferMessage;
 import com.example.newicqandroid.entities.User;
 
 
@@ -42,4 +44,9 @@ public interface IApiWebService {
     @POST("invitations")
     Call<Void> invitations(@Body InvitaionApi invitations);
 
+    @POST("token")
+    Call<Void> sendToken(@Body TokenTuple tuple);
+
+    @POST("transfer")
+    Call<Void> sendMsg(@Body TransferMessage transferMessage);
 }
