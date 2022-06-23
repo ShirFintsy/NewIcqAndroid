@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "103699333616",
+    "project_id": "newicqandroid-73c68",
+    "storage_bucket": "newicqandroid-73c68.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:103699333616:android:84c38e365d495e8d5fdd35",
+        "android_client_info": {
+          "package_name": "com.example.newicqandroid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "103699333616-vlv1aecu4bis0rtf4u55dtifpdhvv4kp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDiAghG4uyy8shDDh0DN9-_qjUburEtlM0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "103699333616-vlv1aecu4bis0rtf4u55dtifpdhvv4kp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
