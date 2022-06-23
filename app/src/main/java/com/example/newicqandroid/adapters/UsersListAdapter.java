@@ -96,8 +96,13 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.User
             holder.user.setText(userRepository.getDisplayName(current));
             holder.lastMsg.setText(chatRepository.getLastMsgByChadId(chat.getIdChat()).getContent());
             holder.date.setText(chatRepository.getLastMsgByChadId(chat.getIdChat()).getCreated());
+            Bitmap profile = userRepository.getProfilePic(current);
+            if(profile == null){
+                holder.profilePicture.setImageResource(R.drawable.default_picture);
+            }else{
+                holder.profilePicture.setImageBitmap(profile);
+            }
             //holder.profilePicture.setImageBitmap(currentUser.decodeImg());
-
         }
     }
 

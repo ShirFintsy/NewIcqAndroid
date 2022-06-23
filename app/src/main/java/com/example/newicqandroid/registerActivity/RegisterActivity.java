@@ -67,7 +67,7 @@ public class RegisterActivity extends AppCompatActivity implements IOnResponse {
 
         String strImg;
         if(!uploadedImg){
-            strImg = "defult_picture.jpg";
+            strImg = "default_picture.jpg";
         }else {
             Drawable image = binding.imageButton.getDrawable();
             Bitmap img = Utils.drawableToBitmap(image);

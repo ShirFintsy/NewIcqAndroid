@@ -2,6 +2,7 @@ package com.example.newicqandroid.viewModels;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
