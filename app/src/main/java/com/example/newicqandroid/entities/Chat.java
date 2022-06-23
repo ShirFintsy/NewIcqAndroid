@@ -50,6 +50,12 @@ public class Chat {
         this.idUser2 = idUser2;
     }
 
+    public String getOtherUser(String user){
+        if(getIdUser1().equals(user)){
+            return getIdUser2();
+        }
+        return getIdUser1();
+    }
 
 
 }

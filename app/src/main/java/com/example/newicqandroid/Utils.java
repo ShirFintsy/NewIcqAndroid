@@ -7,12 +7,13 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.Base64;
 
 import java.io.ByteArrayOutputStream;
 
-//This class contains methods that helps the registerActivity logic
+//This class contains methods that helps with image representation
 public class Utils {
 
     /*
@@ -43,13 +44,19 @@ public class Utils {
         //return output;
     }
 
-    static public Bitmap drawableToBitmap(Drawable img){
-        Bitmap bitmap = null;
-
-        if(!(img.getIntrinsicWidth() <= 0 || img.getIntrinsicHeight() <= 0)) {
-          bitmap = Bitmap.createBitmap(img.getIntrinsicWidth(),
-                  img.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+    public static Bitmap drawableToBitmap (Drawable drawable) {
+        if (drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable)drawable).getBitmap();
         }
+
+        int width = drawable.getIntrinsicWidth();
+        int height = drawable.getIntrinsicHeight();
+
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+
         return bitmap;
     }
 
