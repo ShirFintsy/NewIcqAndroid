@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.example.newicqandroid.api.ApiManager;
 import com.example.newicqandroid.entities.Chat;
 import com.example.newicqandroid.entities.Message;
 import com.example.newicqandroid.entities.infoForIntent;
@@ -25,8 +26,6 @@ import com.google.firebase.messaging.RemoteMessage;
 import java.util.Map;
 
 public class NewIcqService extends FirebaseMessagingService {
-    private MessagesRepository msgRepo;
-    private ChatRepository chatRepo;
 
     public NewIcqService() {
     }
@@ -42,31 +41,16 @@ public class NewIcqService extends FirebaseMessagingService {
             String toUser = data.get("toUser");
             String fromUser = data.get("fromUser");
             String msg = data.get("text");
-            String cpyMsg = new String(msg);
-
-
-            /*chatRepo = new ChatRepository(this);
-            //String fromUser = chatRepo.getOtherUser(toUser, parseInt(chatId));
-            Chat c = chatRepo.findChatByUsers(toUser, fromUser);
-            if (c == null) {
-                c = chatRepo.insertChat(new Chat(toUser, fromUser));
-            }
-            msgRepo = new MessagesRepository(getApplicationContext(), c.getIdChat());
-            msgRepo.addMsg(new Message(toUser, fromUser, msg, c.getIdChat()));
-            // enter the right activity by chat:
-            Intent intent = new Intent(this, ChatsActivity.class);
-            intent.putExtra("username", toUser);*/
-
-
+            //String merge = toUser.concat(",").concat(fromUser).concat(",").concat(msg);
 
             Intent intent = new Intent(this, ChatMessagesActivity.class);
-            /*intent.putExtra("notification", msg);
-            intent.putExtra("username", toUser);
-            intent.putExtra("fromUser", fromUser);*/
-            intent.putExtra("notification", new infoForIntent(toUser, fromUser, msg));
+            //intent.putExtra("info", merge);
+            intent.putExtra("user", toUser);
+            intent.putExtra("otherUser", fromUser);
+            intent.putExtra("msg", msg);
 
 
-            PendingIntent snoozePendingIntent = PendingIntent.getActivity(this, 0, intent, 0, null);
+            PendingIntent snoozePendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "1")
                     .setSmallIcon(R.drawable.ic_launcher_background)
