@@ -42,18 +42,8 @@ public class NewIcqService extends FirebaseMessagingService {
             String toUser = data.get("toUser");
             String fromUser = data.get("fromUser");
             String msg = data.get("text");
-            String cpyMsg = new String(msg);
-//            chatRepo = new ChatRepository(this);
-//            String fromUser = chatRepo.getOtherUser(toUser, parseInt(chatId));
-//            Chat c =chatRepo.findChatById(parseInt(chatId));
-//            if (c == null) {
-//                c = chatRepo.insertChat(new Chat(toUser, fromUser));
-//            }
-//            msgRepo = new MessagesRepository(getApplicationContext(), c.getIdChat());
-//            msgRepo.addMsg(new Message(toUser, fromUser, msg, c.getIdChat()));
-//            // enter the right activity by chat:
-//            Intent intent = new Intent(this, ChatsActivity.class);
-//            intent.putExtra("username", toUser);
+
+
             Intent intent = new Intent(this, ChatMessagesActivity.class);
             intent.putExtra("notification", msg);
             intent.putExtra("username", toUser);

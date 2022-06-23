@@ -46,13 +46,6 @@ public class ChatMessagesActivity extends AppCompatActivity {
         connectedUser = intent.getExtras().getString("username");
         otherUser = intent.getExtras().getString("otherUser");
 
-
-        idChat = parseInt();
-
-
-        if (gotNotification != null) { // arrived to this activity from a notification
-            onReceivedMsg(gotNotification);
-        }
         server = intent.getExtras().getString("server");
 
         if (server == null) {
@@ -71,7 +64,10 @@ public class ChatMessagesActivity extends AppCompatActivity {
         msgsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         msgsViewModel.get().observe(this, msgsAdapter::setMsgs);
-
+        onReceivedMsg("hi");
+//        if (gotNotification != null) { // arrived to this activity from a notification
+//            onReceivedMsg(gotNotification);
+//        }
         binding.sendBtn.setOnClickListener(this::onSendMsg);
         binding.displayName.setText(msgsViewModel.getDisplayName(otherUser));
         //binding.profilePic.setImageBitmap(msgsViewModel.getProfilePic(otherUser));
