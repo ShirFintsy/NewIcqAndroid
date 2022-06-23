@@ -40,7 +40,7 @@ public class NewIcqService extends FirebaseMessagingService {
            //get info from server (message details):
             Map<String, String> data = remoteMessage.getData();
             String toUser = data.get("toUser");
-            String chatId = data.get("chatId");
+            String fromUser = data.get("fromUser");
             String msg = data.get("text");
             String cpyMsg = new String(msg);
 //            chatRepo = new ChatRepository(this);
@@ -57,7 +57,7 @@ public class NewIcqService extends FirebaseMessagingService {
             Intent intent = new Intent(this, ChatMessagesActivity.class);
             intent.putExtra("notification", msg);
             intent.putExtra("username", toUser);
-            intent.putExtra("idChat", chatId);
+            intent.putExtra("otherUser", fromUser);
 
             PendingIntent snoozePendingIntent = PendingIntent.getActivity(this, 0, intent, 0, null);
 

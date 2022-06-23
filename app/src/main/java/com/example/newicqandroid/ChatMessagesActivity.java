@@ -16,6 +16,7 @@ import com.example.newicqandroid.adapters.MessagesAdapter;
 import com.example.newicqandroid.api.ApiManager;
 import com.example.newicqandroid.databinding.ActivityChatMessagesBinding;
 import com.example.newicqandroid.databinding.ActivityLoginBinding;
+import com.example.newicqandroid.entities.Chat;
 import com.example.newicqandroid.entities.Message;
 import com.example.newicqandroid.entities.TransferMessage;
 import com.example.newicqandroid.entities.User;
@@ -43,7 +44,10 @@ public class ChatMessagesActivity extends AppCompatActivity {
         Intent intent = getIntent();
         gotNotification = intent.getExtras().getString("notification");
         connectedUser = intent.getExtras().getString("username");
-        idChat = parseInt(intent.getExtras().getString("idChat"));
+        otherUser = intent.getExtras().getString("otherUser");
+
+
+        idChat = parseInt();
 
 
         if (gotNotification != null) { // arrived to this activity from a notification
